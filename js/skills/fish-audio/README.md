@@ -2,6 +2,8 @@
 
 <p align="center">Generate MP3 speech through RunAPI from Claude Code, Codex, Gemini CLI, Cursor, and other agents.</p>
 
+Requests may include base64-encoded reference audio and exact transcripts for request-scoped voice matching.
+
 <div align="center">
 
 [![skills.sh](https://www.skills.sh/b/runapi-ai/fish-audio)](https://www.skills.sh/runapi-ai/fish-audio/fish-audio)

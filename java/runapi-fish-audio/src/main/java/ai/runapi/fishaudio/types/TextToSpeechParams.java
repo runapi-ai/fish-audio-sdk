@@ -1,5 +1,6 @@
 package ai.runapi.fishaudio.types;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,10 +9,12 @@ import java.util.Map;
 public final class TextToSpeechParams {
   private final String model;
   private final String text;
+  private final List<ReferenceAudio> references;
 
   private TextToSpeechParams(Builder builder) {
     this.model = builder.model;
     this.text = FishaudioParamUtils.requireNonBlank(builder.text, "text");
+    this.references = FishaudioParamUtils.list(builder.references, "references");
   }
 
   /** Creates a new TextToSpeechParams builder. */
@@ -29,15 +32,26 @@ public final class TextToSpeechParams {
     Map<String, Object> raw = new LinkedHashMap<String, Object>();
     raw.put("model", FishaudioParamUtils.wireValue(model));
     raw.put("text", FishaudioParamUtils.wireValue(text));
+    raw.put("references", referencesToMaps(references));
     return FishaudioParamUtils.compact(raw);
   }
 
-
+  private static List<Map<String, Object>> referencesToMaps(List<ReferenceAudio> values) {
+    if (values == null) {
+      return null;
+    }
+    List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+    for (ReferenceAudio item : values) {
+      result.add(item.toMap());
+    }
+    return java.util.Collections.unmodifiableList(result);
+  }
 
   /** Builder for {@link TextToSpeechParams}. */
   public static final class Builder {
     private String model;
     private String text;
+    private List<ReferenceAudio> references;
 
     private Builder() {}
 
@@ -57,6 +71,12 @@ public final class TextToSpeechParams {
     /** Sets the line text. */
     public Builder text(String value) {
       this.text = FishaudioParamUtils.requireNonBlank(value, "text");
+      return this;
+    }
+
+    /** Sets the request-scoped reference audio samples. */
+    public Builder references(List<ReferenceAudio> value) {
+      this.references = value;
       return this;
     }
 

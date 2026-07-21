@@ -42,7 +42,7 @@ When integrating Fish Audio into an application or production workflow, check th
 - Java: `ai.runapi:runapi-fish-audio`
 - PHP: `runapi-ai/fish-audio`
 
-The synchronous `text_to_speech` resource accepts `model` and `text` and returns a completed response with RunAPI-managed `audios`.
+The synchronous `text_to_speech` resource accepts `model`, `text`, and optional request-scoped `references`. Each reference requires base64-encoded raw audio bytes in `audio` and its exact transcript in `text`. The resource returns a completed response with RunAPI-managed `audios`.
 
 ## CLI path
 
@@ -56,7 +56,7 @@ runapi fish-audio text-to-speech --help
 runapi fish-audio text-to-speech --input-file request.json
 ```
 
-The request file contains only `model` and `text`; voice-cloning fields are not supported. The command returns one completed response, so do not add `--async` or call `runapi wait`.
+The request file contains `model`, `text`, and optional `references` entries with `audio` and `text`. `references` applies only to that request; reusable `reference_id` values are not supported. The command returns one completed response, so do not add `--async` or call `runapi wait`.
 
 ## Variants
 

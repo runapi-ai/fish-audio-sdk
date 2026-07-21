@@ -13,6 +13,7 @@ import ai.runapi.core.http.JsonRequestBody;
 import ai.runapi.core.json.Json;
 import ai.runapi.fishaudio.types.TextToSpeechResponse;
 import ai.runapi.fishaudio.types.TextToSpeechResponse;
+import ai.runapi.fishaudio.types.ReferenceAudio;
 import ai.runapi.fishaudio.types.TextToSpeechModel;
 import ai.runapi.fishaudio.types.TextToSpeechParams;
 import ai.runapi.fishaudio.types.TextToSpeechResponse;
@@ -49,6 +50,7 @@ class FishAudioClientTest {
         TextToSpeechParams.builder()
             .model(TextToSpeechModel.S1)
             .text("sample")
+            .references(java.util.Collections.singletonList(ReferenceAudio.builder().audio("UklGRg==").text("Reference transcript").build()))
             .build()
     );
 
@@ -56,6 +58,8 @@ class FishAudioClientTest {
     assertEquals("/api/v1/fish_audio/text_to_speech", transport.request.getPath());
     JsonNode body = bodyJson(transport.request);
     assertNotNull(body);
+    assertEquals("UklGRg==", body.get("references").get(0).get("audio").asText());
+    assertEquals("Reference transcript", body.get("references").get(0).get("text").asText());
   }
 
   @Test

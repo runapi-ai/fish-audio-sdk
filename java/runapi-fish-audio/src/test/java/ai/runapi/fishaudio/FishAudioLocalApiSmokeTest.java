@@ -7,7 +7,8 @@
     import ai.runapi.core.RequestOptions;
     import ai.runapi.core.json.Json;
     import ai.runapi.fishaudio.types.TextToSpeechResponse;
-    import ai.runapi.fishaudio.types.TextToSpeechModel;
+    import ai.runapi.fishaudio.types.ReferenceAudio;
+import ai.runapi.fishaudio.types.TextToSpeechModel;
 import ai.runapi.fishaudio.types.TextToSpeechParams;
 import ai.runapi.fishaudio.types.TextToSpeechResponse;
     import com.fasterxml.jackson.databind.JsonNode;

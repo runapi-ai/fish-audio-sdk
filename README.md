@@ -28,7 +28,7 @@ gem install runapi-fish-audio
 go get github.com/runapi-ai/fish-audio-sdk/go@latest
 ```
 
-For Java, install `ai.runapi:runapi-fish-audio:0.1.0`. The PHP package is released from the split repository at https://github.com/runapi-ai/fish-audio-php.
+For Java, install `ai.runapi:runapi-fish-audio:0.1.1`. The PHP package is released from the split repository at https://github.com/runapi-ai/fish-audio-php.
 
 ## Quick start
 
@@ -36,9 +36,18 @@ For Java, install `ai.runapi:runapi-fish-audio:0.1.0`. The PHP package is releas
 import { FishAudioClient } from '@runapi.ai/fish-audio';
 
 const client = new FishAudioClient();
-const result = await client.textToSpeech.run({ model: 's1', text: 'Hello from RunAPI' });
+const result = await client.textToSpeech.run({
+  model: 's1',
+  text: 'Hello from RunAPI',
+  references: [{
+    audio: '<base64 raw audio bytes>',
+    text: 'Exact reference transcript',
+  }],
+});
 console.log(result.audios[0].url);
 ```
+
+`references` applies only to the current request. Each item requires base64-encoded raw audio bytes and its exact transcript; reusable voice IDs are not supported.
 
 ## Variants
 
