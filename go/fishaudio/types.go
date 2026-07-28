@@ -1,6 +1,8 @@
 // Package fishaudio provides Fish Audio speech generation through RunAPI.
 package fishaudio
 
+import "github.com/runapi-ai/core-sdk/go/core"
+
 // ReferenceAudio is a request-scoped reference audio sample.
 type ReferenceAudio struct {
 	Audio string `json:"audio"`
@@ -24,6 +26,7 @@ type Audio struct {
 
 // TextToSpeechResponse is the completed synchronous speech result.
 type TextToSpeechResponse struct {
+	core.TaskBillingFacts
 	ID     string  `json:"id"`
 	Status string  `json:"status"`
 	Audios []Audio `json:"audios"`

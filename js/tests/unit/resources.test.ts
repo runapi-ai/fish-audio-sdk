@@ -12,6 +12,7 @@ describe('Fish Audio resources', () => {
       id: 'task_1',
       status: 'completed',
       audios: [{ url: 'https://runapi.ai/rails/active_storage/audio.mp3', format: 'mp3', mime_type: 'audio/mpeg', size_bytes: 128 }],
+      billing: { reservation: null, settlement: { charged_amount_cents: 2, amount_micro_cents: 2_000_000 }, refund: null },
     });
     const resource = new TextToSpeech(mockHttp);
 
@@ -29,5 +30,6 @@ describe('Fish Audio resources', () => {
       },
     });
     expect(result.audios[0]?.format).toBe('mp3');
+    expect(result.billing.settlement?.charged_amount_cents).toBe(2);
   });
 });

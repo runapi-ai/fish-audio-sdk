@@ -28,7 +28,7 @@ gem install runapi-fish-audio
 go get github.com/runapi-ai/fish-audio-sdk/go@latest
 ```
 
-For Java, install `ai.runapi:runapi-fish-audio:0.1.1`. The PHP package is released from the split repository at https://github.com/runapi-ai/fish-audio-php.
+For Java, install `ai.runapi:runapi-fish-audio:0.1.2`. The PHP package is released from the split repository at https://github.com/runapi-ai/fish-audio-php.
 
 ## Quick start
 

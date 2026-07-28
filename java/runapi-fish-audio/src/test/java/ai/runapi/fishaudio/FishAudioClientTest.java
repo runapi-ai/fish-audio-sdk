@@ -43,7 +43,7 @@ class FishAudioClientTest {
 
   @Test
   void runSendsExpectedRequestShape() throws Exception {
-    CapturingTransport transport = new CapturingTransport("{\"id\":\"sync_123\",\"status\":\"completed\",\"audios\":[{\"url\":\"https://file.runapi.ai/generated.mp3\",\"format\":\"mp3\",\"mime_type\":\"audio/mpeg\",\"size_bytes\":128}],\"custom\":\"kept\"}");
+    CapturingTransport transport = new CapturingTransport("{\"id\":\"sync_123\",\"status\":\"completed\",\"audios\":[{\"url\":\"https://file.runapi.ai/generated.mp3\",\"format\":\"mp3\",\"mime_type\":\"audio/mpeg\",\"size_bytes\":128}],\"billing\":{\"settlement\":{\"charged_amount_cents\":11,\"amount_micro_cents\":1050000}},\"custom\":\"kept\"}");
     FishAudioClient client = FishAudioClient.builder().apiKey("sk-test").transport(transport).build();
 
     client.textToSpeech().run(
@@ -64,7 +64,7 @@ class FishAudioClientTest {
 
   @Test
   void runDecodesResponseAndExtraFields() {
-    CapturingTransport transport = new CapturingTransport("{\"id\":\"sync_123\",\"status\":\"completed\",\"audios\":[{\"url\":\"https://file.runapi.ai/generated.mp3\",\"format\":\"mp3\",\"mime_type\":\"audio/mpeg\",\"size_bytes\":128}],\"custom\":\"kept\"}");
+    CapturingTransport transport = new CapturingTransport("{\"id\":\"sync_123\",\"status\":\"completed\",\"audios\":[{\"url\":\"https://file.runapi.ai/generated.mp3\",\"format\":\"mp3\",\"mime_type\":\"audio/mpeg\",\"size_bytes\":128}],\"billing\":{\"settlement\":{\"charged_amount_cents\":11,\"amount_micro_cents\":1050000}},\"custom\":\"kept\"}");
     FishAudioClient client = FishAudioClient.builder().apiKey("sk-test").transport(transport).build();
 
     TextToSpeechResponse response = client.textToSpeech().run(
@@ -80,12 +80,13 @@ class FishAudioClientTest {
     assertEquals("completed", response.getStatus().value());
     assertEquals("audio/mpeg", response.getAudios().get(0).getMimeType());
     assertEquals(Long.valueOf(128), response.getAudios().get(0).getSizeBytes());
+    assertEquals(Long.valueOf(11), response.getBilling().getSettlement().getChargedAmountCents());
     assertEquals("kept", response.extraFields().get("custom").asText());
   }
 
     @Test
     void coversTexttospeechResourceMethods() {
-      CapturingTransport transport = new CapturingTransport("{\"id\":\"sync_text_to_speech\",\"status\":\"completed\",\"audios\":[{\"url\":\"https://file.runapi.ai/generated.mp3\",\"format\":\"mp3\",\"mime_type\":\"audio/mpeg\",\"size_bytes\":128}]}");
+      CapturingTransport transport = new CapturingTransport("{\"id\":\"sync_text_to_speech\",\"status\":\"completed\",\"audios\":[{\"url\":\"https://file.runapi.ai/generated.mp3\",\"format\":\"mp3\",\"mime_type\":\"audio/mpeg\",\"size_bytes\":128}],\"billing\":{\"settlement\":{\"charged_amount_cents\":11,\"amount_micro_cents\":1050000}}}");
       FishAudioClient client = FishAudioClient.builder().apiKey("sk-test").transport(transport).build();
 
       TextToSpeechResponse response = client.textToSpeech().run(
@@ -95,8 +96,9 @@ class FishAudioClientTest {
                   .build()
       );
       assertNotNull(response);
+      assertEquals(Long.valueOf(11), response.getBilling().getSettlement().getChargedAmountCents());
 
-      CapturingTransport transportWithOptions = new CapturingTransport("{\"id\":\"sync_text_to_speech_options\",\"status\":\"completed\",\"audios\":[{\"url\":\"https://file.runapi.ai/generated.mp3\",\"format\":\"mp3\",\"mime_type\":\"audio/mpeg\",\"size_bytes\":128}]}");
+      CapturingTransport transportWithOptions = new CapturingTransport("{\"id\":\"sync_text_to_speech_options\",\"status\":\"completed\",\"audios\":[{\"url\":\"https://file.runapi.ai/generated.mp3\",\"format\":\"mp3\",\"mime_type\":\"audio/mpeg\",\"size_bytes\":128}],\"billing\":{\"settlement\":{\"charged_amount_cents\":11,\"amount_micro_cents\":1050000}}}");
       FishAudioClient clientWithOptions = FishAudioClient.builder().apiKey("sk-test").transport(transportWithOptions).build();
       assertNotNull(clientWithOptions.textToSpeech().run(
               TextToSpeechParams.builder()
