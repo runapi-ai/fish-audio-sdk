@@ -3,7 +3,7 @@
 module RunApi
   module FishAudio
     module Types
-      # A RunAPI-managed MP3 audio result.
+      # A RunAPI-managed audio result.
       class Audio < RunApi::Core::BaseModel
         required :url, String
         required :format, String

@@ -4,12 +4,12 @@ Dir.chdir(__dir__) do
 
   Gem::Specification.new do |spec|
     spec.name = "runapi-fish-audio"
-    spec.version = "0.1.3"
+    spec.version = "0.2.0"
     spec.metadata["runapi_slug"] = "fish-audio"
     spec.authors = ["RunAPI"]
     spec.email = ["contact@runapi.ai"]
     spec.summary = "Fish Audio Ruby SDK for RunAPI"
-    spec.description = "Install `runapi-fish-audio`, create `RunApi::FishAudio::Client`, and call `client.text_to_speech.run(model: \"s1\", text: \"Hello\")`."
+    spec.description = "Install `runapi-fish-audio`, create `RunApi::FishAudio::Client`, and call `client.text_to_speech.run(model: \"s2.1-pro\", text: \"Hello [excited]\", output_format: \"wav\", sample_rate_hz: 44_100)`."
     spec.homepage = "https://runapi.ai/models/fish-audio"
     spec.license = "Apache-2.0"
     spec.required_ruby_version = ">= 3.1.0"
@@ -22,6 +22,6 @@ Dir.chdir(__dir__) do
     spec.files = Dir.glob("lib/**/*") + %w[LICENSE README.md]
     spec.extra_rdoc_files = ["README.md"]
         spec.require_paths = ["lib"]
-    spec.add_dependency "runapi-core", "~> 0.3.0"
+    spec.add_dependency "runapi-core", "~> 0.3.3"
   end
 end

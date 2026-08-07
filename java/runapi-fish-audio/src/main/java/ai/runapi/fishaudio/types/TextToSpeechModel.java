@@ -8,6 +8,8 @@ public final class TextToSpeechModel extends FishaudioValue {
   public static final TextToSpeechModel S1 = new TextToSpeechModel("s1");
   /** s2-pro model slug. */
   public static final TextToSpeechModel S2_PRO = new TextToSpeechModel("s2-pro");
+  /** s2.1-pro model slug. */
+  public static final TextToSpeechModel S2_1_PRO = new TextToSpeechModel("s2.1-pro");
 
   /** Creates a model value from a literal model slug. */
   @JsonCreator

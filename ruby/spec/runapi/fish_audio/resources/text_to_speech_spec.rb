@@ -9,8 +9,10 @@ RSpec.describe RunApi::FishAudio::Resources::TextToSpeech do
 
   it "POSTs params and decodes managed audio" do
     params = {
-      model: "s1",
+      model: "s2.1-pro",
       text: "Hello",
+      output_format: "wav",
+      sample_rate_hz: 24_000,
       references: [{audio: "UklGRg==", text: "Reference transcript"}]
     }
     expect(http).to receive(:request).with(:post, endpoint, body: params)

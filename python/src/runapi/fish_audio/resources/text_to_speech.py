@@ -12,7 +12,7 @@ from ..types import TextToSpeechResponse
 
 
 class TextToSpeech(Resource):
-    """Generate a RunAPI-managed MP3 from text."""
+    """Generate RunAPI-managed MP3 or WAV audio from text."""
 
     ENDPOINT = "/api/v1/fish_audio/text_to_speech"
     RESPONSE_CLASS = TextToSpeechResponse

@@ -5,7 +5,7 @@ import type { TextToSpeechParams, TextToSpeechResponse } from '../types';
 
 const ENDPOINT = '/api/v1/fish_audio/text_to_speech';
 
-/** Generate a RunAPI-managed MP3 from text. */
+/** Generate RunAPI-managed MP3 or WAV audio from text. */
 export class TextToSpeech {
   constructor(private readonly http: HttpClient) {}
 

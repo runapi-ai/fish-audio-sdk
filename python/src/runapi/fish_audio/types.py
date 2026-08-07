@@ -4,7 +4,7 @@ from runapi.core import BaseModel, TaskResponse, optional, required
 
 
 class Audio(BaseModel):
-    """A RunAPI-managed MP3 audio result."""
+    """A RunAPI-managed audio result."""
 
     url = required(str)
     format = required(str)

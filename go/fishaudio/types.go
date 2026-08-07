@@ -11,12 +11,15 @@ type ReferenceAudio struct {
 
 // TextToSpeechParams configures synchronous speech generation.
 type TextToSpeechParams struct {
-	Model      string           `json:"model" help:"required; model slug"`
-	Text       string           `json:"text" help:"required; text to synthesize"`
-	References []ReferenceAudio `json:"references,omitempty" help:"optional; request-scoped reference audio samples with base64 audio and exact transcripts"`
+	Model          string           `json:"model" help:"required; model slug"`
+	Text           string           `json:"text" help:"required; text to synthesize"`
+	OutputFormat   string           `json:"output_format,omitempty" help:"optional; output audio format (mp3 or wav); defaults to mp3"`
+	SampleRateHz   int              `json:"sample_rate_hz,omitempty" help:"optional; output sample rate in hertz"`
+	BitrateKbps    int              `json:"bitrate_kbps,omitempty" help:"optional; MP3 bitrate in kilobits per second; not allowed for WAV"`
+	References     []ReferenceAudio `json:"references,omitempty" help:"optional; request-scoped reference audio samples with base64 audio and exact transcripts"`
 }
 
-// Audio describes a RunAPI-managed MP3 result.
+// Audio describes a RunAPI-managed audio result.
 type Audio struct {
 	URL       string `json:"url"`
 	Format    string `json:"format"`

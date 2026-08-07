@@ -3,7 +3,7 @@
 module RunApi
   module FishAudio
     module Resources
-      # Generates RunAPI-managed MP3 speech from text.
+      # Generates RunAPI-managed MP3 or WAV speech from text.
       class TextToSpeech
         include RunApi::Core::ResourceHelpers
 

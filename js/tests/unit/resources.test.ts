@@ -17,15 +17,19 @@ describe('Fish Audio resources', () => {
     const resource = new TextToSpeech(mockHttp);
 
     const result = await resource.run({
-      model: 's1',
+      model: 's2.1-pro',
       text: 'Hello from RunAPI',
+      output_format: 'wav',
+      sample_rate_hz: 24000,
       references: [{ audio: 'UklGRg==', text: 'Reference transcript' }],
     });
 
     expect(mockHttp.request).toHaveBeenCalledWith('POST', '/api/v1/fish_audio/text_to_speech', {
       body: {
-        model: 's1',
+        model: 's2.1-pro',
         text: 'Hello from RunAPI',
+        output_format: 'wav',
+        sample_rate_hz: 24000,
         references: [{ audio: 'UklGRg==', text: 'Reference transcript' }],
       },
     });

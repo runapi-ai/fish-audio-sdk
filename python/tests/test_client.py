@@ -27,12 +27,20 @@ def test_run_posts_params_and_decodes_managed_audio():
     client = FishAudioClient(api_key="k", http_client=fake)
 
     references = [{"audio": "UklGRg==", "text": "Reference transcript"}]
-    result = client.text_to_speech.run(model="s1", text="Hello", references=references)
+    result = client.text_to_speech.run(
+        model="s2.1-pro", text="Hello", output_format="wav", sample_rate_hz=24000, references=references
+    )
 
     assert fake.calls == [(
         "post",
         "/api/v1/fish_audio/text_to_speech",
-        {"model": "s1", "text": "Hello", "references": references},
+        {
+            "model": "s2.1-pro",
+            "text": "Hello",
+            "output_format": "wav",
+            "sample_rate_hz": 24000,
+            "references": references,
+        },
     )]
     assert isinstance(result, TextToSpeechResponse)
     assert result.audios[0].format == "mp3"

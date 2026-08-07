@@ -9,11 +9,17 @@ import java.util.Map;
 public final class TextToSpeechParams {
   private final String model;
   private final String text;
+  private final String outputFormat;
+  private final Integer sampleRateHz;
+  private final Integer bitrateKbps;
   private final List<ReferenceAudio> references;
 
   private TextToSpeechParams(Builder builder) {
     this.model = builder.model;
     this.text = FishaudioParamUtils.requireNonBlank(builder.text, "text");
+    this.outputFormat = builder.outputFormat;
+    this.sampleRateHz = builder.sampleRateHz;
+    this.bitrateKbps = builder.bitrateKbps;
     this.references = FishaudioParamUtils.list(builder.references, "references");
   }
 
@@ -32,6 +38,9 @@ public final class TextToSpeechParams {
     Map<String, Object> raw = new LinkedHashMap<String, Object>();
     raw.put("model", FishaudioParamUtils.wireValue(model));
     raw.put("text", FishaudioParamUtils.wireValue(text));
+    raw.put("output_format", outputFormat);
+    raw.put("sample_rate_hz", sampleRateHz);
+    raw.put("bitrate_kbps", bitrateKbps);
     raw.put("references", referencesToMaps(references));
     return FishaudioParamUtils.compact(raw);
   }
@@ -51,6 +60,9 @@ public final class TextToSpeechParams {
   public static final class Builder {
     private String model;
     private String text;
+    private String outputFormat;
+    private Integer sampleRateHz;
+    private Integer bitrateKbps;
     private List<ReferenceAudio> references;
 
     private Builder() {}
@@ -71,6 +83,24 @@ public final class TextToSpeechParams {
     /** Sets the line text. */
     public Builder text(String value) {
       this.text = FishaudioParamUtils.requireNonBlank(value, "text");
+      return this;
+    }
+
+    /** Sets the output audio format. */
+    public Builder outputFormat(String value) {
+      this.outputFormat = FishaudioParamUtils.requireNonBlankTrim(value, "outputFormat");
+      return this;
+    }
+
+    /** Sets the output sample rate in hertz. */
+    public Builder sampleRateHz(Integer value) {
+      this.sampleRateHz = value;
+      return this;
+    }
+
+    /** Sets the MP3 bitrate in kilobits per second. */
+    public Builder bitrateKbps(Integer value) {
+      this.bitrateKbps = value;
       return this;
     }
 

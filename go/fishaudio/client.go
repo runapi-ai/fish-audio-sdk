@@ -34,7 +34,7 @@ func NewClientWithHTTP(httpClient core.HTTPClient) *Client {
 	return &Client{Base: base.New(httpClient), TextToSpeech: &TextToSpeech{http: httpClient}}
 }
 
-// TextToSpeech generates a RunAPI-managed MP3 from text.
+// TextToSpeech generates RunAPI-managed audio from text.
 type TextToSpeech struct{ http core.HTTPClient }
 
 // Run generates speech synchronously.

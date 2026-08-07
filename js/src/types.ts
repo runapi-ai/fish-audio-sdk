@@ -12,11 +12,17 @@ export interface TextToSpeechParams {
   model: string;
   /** Text to synthesize. */
   text: string;
+  /** Output audio format. Defaults to MP3. */
+  output_format?: 'mp3' | 'wav';
+  /** Output sample rate in hertz. */
+  sample_rate_hz?: 8000 | 16000 | 24000 | 32000 | 44100;
+  /** MP3 bitrate in kilobits per second. Not allowed for WAV. */
+  bitrate_kbps?: 64 | 128 | 192;
   /** Optional request-scoped reference audio samples. */
   references?: ReferenceAudio[];
 }
 
-/** A RunAPI-managed MP3 audio result. */
+/** A RunAPI-managed audio result. */
 export interface Audio {
   url: string;
   format: string;
