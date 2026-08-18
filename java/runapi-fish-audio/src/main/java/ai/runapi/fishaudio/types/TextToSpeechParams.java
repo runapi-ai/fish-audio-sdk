@@ -13,6 +13,7 @@ public final class TextToSpeechParams {
   private final Integer sampleRateHz;
   private final Integer bitrateKbps;
   private final List<ReferenceAudio> references;
+  private final String voiceId;
 
   private TextToSpeechParams(Builder builder) {
     this.model = builder.model;
@@ -21,6 +22,7 @@ public final class TextToSpeechParams {
     this.sampleRateHz = builder.sampleRateHz;
     this.bitrateKbps = builder.bitrateKbps;
     this.references = FishaudioParamUtils.list(builder.references, "references");
+    this.voiceId = builder.voiceId;
   }
 
   /** Creates a new TextToSpeechParams builder. */
@@ -42,6 +44,7 @@ public final class TextToSpeechParams {
     raw.put("sample_rate_hz", sampleRateHz);
     raw.put("bitrate_kbps", bitrateKbps);
     raw.put("references", referencesToMaps(references));
+    raw.put("voice_id", FishaudioParamUtils.wireValue(voiceId));
     return FishaudioParamUtils.compact(raw);
   }
 
@@ -64,6 +67,7 @@ public final class TextToSpeechParams {
     private Integer sampleRateHz;
     private Integer bitrateKbps;
     private List<ReferenceAudio> references;
+    private String voiceId;
 
     private Builder() {}
 
@@ -107,6 +111,12 @@ public final class TextToSpeechParams {
     /** Sets the request-scoped reference audio samples. */
     public Builder references(List<ReferenceAudio> value) {
       this.references = value;
+      return this;
+    }
+
+    /** Sets a reusable voice ID returned by create voice. */
+    public Builder voiceId(String value) {
+      this.voiceId = FishaudioParamUtils.requireNonBlank(value, "voiceId");
       return this;
     }
 

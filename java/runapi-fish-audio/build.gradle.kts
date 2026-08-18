@@ -5,7 +5,7 @@ plugins {
 
 extra["runapiSlug"] = "fish-audio"
 
-description = "RunAPI Fish Audio Java SDK for Fish Audio workflows."
+description = "RunAPI Fish Audio Java SDK for reusable voice and speech workflows."
 
 java {
   withSourcesJar()
@@ -13,7 +13,7 @@ java {
 }
 
 dependencies {
-  api("ai.runapi:runapi-core:0.3.0")
+  api("ai.runapi:runapi-core:0.5.0")
 
   testImplementation(platform("org.junit:junit-bom:5.10.3"))
   testImplementation("org.junit.jupiter:junit-jupiter")
@@ -26,7 +26,7 @@ publishing {
       artifactId = "runapi-fish-audio"
       pom {
         name = "RunAPI Fish Audio Java SDK"
-        description = "RunAPI Fish Audio Java SDK for Fish Audio workflows."
+        description = "RunAPI Fish Audio Java SDK for reusable voice and speech workflows."
         url = "https://runapi.ai/models/fish-audio"
         licenses {
           license {

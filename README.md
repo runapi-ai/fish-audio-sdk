@@ -4,7 +4,7 @@
 
 <h3 align="center"><a href="https://github.com/runapi-ai/fish-audio-sdk">Fish Audio API SDK for RunAPI</a></h3>
 
-<p align="center">Fish Audio API SDKs for JavaScript, Python, Ruby, Go, Java, and PHP on RunAPI.</p>
+<p align="center">Fish Audio API SDKs for account-owned voice resources and speech generation in JavaScript, Python, Ruby, Go, Java, and PHP on RunAPI.</p>
 
 <div align="center">
 
@@ -17,7 +17,7 @@
 
 </div>
 
-Generate RunAPI-managed MP3 or WAV speech from text. Use `s2.1-pro` for recommended production TTS with 83-language support and natural-language expression control. `s2-pro` remains available as a previous-generation option.
+Create account-owned voice resources and generate RunAPI-managed MP3 or WAV speech. Use `s2.1-pro` for recommended production TTS with 83-language support and natural-language expression control. `s2-pro` remains available as a previous-generation option.
 
 ## Install
 
@@ -28,7 +28,7 @@ gem install runapi-fish-audio
 go get github.com/runapi-ai/fish-audio-sdk/go@latest
 ```
 
-For Java, install `ai.runapi:runapi-fish-audio:0.2.0`. The PHP package is released from the split repository at https://github.com/runapi-ai/fish-audio-php.
+For Java, install `ai.runapi:runapi-fish-audio:0.3.0`. The PHP package is released from the split repository at https://github.com/runapi-ai/fish-audio-php.
 
 ## Quick start
 
@@ -36,22 +36,30 @@ For Java, install `ai.runapi:runapi-fish-audio:0.2.0`. The PHP package is releas
 import { FishAudioClient } from '@runapi.ai/fish-audio';
 
 const client = new FishAudioClient();
+const created = await client.createVoice.run({
+  name: 'Narrator',
+  source_audio_url: 'https://cdn.runapi.ai/public/samples/voice.mp3',
+});
+const voice = await client.getVoice.run({ voice_id: created.voice.voice_id });
+if (voice.voice.state !== 'trained') throw new Error(`Voice is ${voice.voice.state}`);
+
 const result = await client.textToSpeech.run({
   model: 's2.1-pro',
   text: 'Hello from RunAPI [excited]',
+  voice_id: created.voice.voice_id,
   output_format: 'wav',
   sample_rate_hz: 44100,
-  references: [{
-    audio: '<base64 raw audio bytes>',
-    text: 'Exact reference transcript',
-  }],
 });
 console.log(result.audios[0].url);
 ```
 
-`references` applies only to the current request. Each item requires base64-encoded raw audio bytes and its exact transcript; reusable voice IDs are not supported.
+Use `client.listVoices.run({ page_number: 1, page_size: 10 })` to list voice resources created by the current account. Voice state is `created`, `training`, `trained`, or `failed`; only `trained` voices can be submitted for speech generation. A returned `voice_id` is a best-effort reference and may stop working later.
+
+Alternatively, pass request-scoped `references`, where each item contains base64-encoded raw audio bytes and its exact transcript. Use `references` when the request must not depend on a previously returned `voice_id`.
 
 `output_format` defaults to `mp3`. MP3 supports `32000` or `44100` Hz and optional `bitrate_kbps` values of `64`, `128`, or `192`. WAV supports `8000`, `16000`, `24000`, `32000`, or `44100` Hz and does not accept `bitrate_kbps`.
+
+This version does not provide update, delete, revoke, or voice-library management methods. It does not make promises about voice retention or how source audio is used for training.
 
 ## Variants
 

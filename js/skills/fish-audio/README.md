@@ -1,6 +1,6 @@
 <p align="center"><a href="https://github.com/runapi-ai/fish-audio"><h3 align="center">Fish Audio API Skill for RunAPI</h3></a></p>
 
-<p align="center">Generate MP3 or WAV speech through RunAPI from Claude Code, Codex, Gemini CLI, Cursor, and other agents.</p>
+<p align="center">Create account-owned voice resources, attempt to reuse their IDs, or generate MP3/WAV speech through RunAPI from Claude Code, Codex, Gemini CLI, Cursor, and other agents.</p>
 
 Requests may include base64-encoded reference audio and exact transcripts for request-scoped voice matching.
 
@@ -34,6 +34,8 @@ Install the fish-audio skill for me:
 - [s1](https://runapi.ai/models/fish-audio/s1)
 - [s2-pro](https://runapi.ai/models/fish-audio/s2-pro)
 - [s2.1-pro](https://runapi.ai/models/fish-audio/s2.1-pro)
+
+The API and SDKs support creating, listing, and getting account-owned voice resources. Only `trained` voices can be submitted for speech generation; a returned `voice_id` is a best-effort reference and may stop working later. Request-scoped `references` remain available when a request must not depend on prior reuse. This version does not provide update, delete, revoke, or voice-library management methods, and it does not promise voice retention.
 
 ## License
 

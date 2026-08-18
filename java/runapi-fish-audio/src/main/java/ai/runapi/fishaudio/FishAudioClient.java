@@ -4,15 +4,24 @@ import ai.runapi.core.BaseClient;
 import ai.runapi.core.ClientOptions;
 import ai.runapi.core.http.HttpTransport;
 import java.net.URI;
+import ai.runapi.fishaudio.resources.CreateVoiceResource;
+import ai.runapi.fishaudio.resources.GetVoiceResource;
+import ai.runapi.fishaudio.resources.ListVoicesResource;
 import ai.runapi.fishaudio.resources.TextToSpeechResource;
 
 /** FishAudio model-family Java SDK client. */
 public final class FishAudioClient extends BaseClient {
   private final TextToSpeechResource textToSpeech;
+  private final CreateVoiceResource createVoice;
+  private final ListVoicesResource listVoices;
+  private final GetVoiceResource getVoice;
 
   private FishAudioClient(ClientOptions options) {
     super(options);
     this.textToSpeech = new TextToSpeechResource(transport(), options());
+    this.createVoice = new CreateVoiceResource(transport(), options());
+    this.listVoices = new ListVoicesResource(transport(), options());
+    this.getVoice = new GetVoiceResource(transport(), options());
   }
 
   /** Creates a new FishAudioClient builder. */
@@ -23,6 +32,21 @@ public final class FishAudioClient extends BaseClient {
   /** Text To Speech operations. */
   public TextToSpeechResource textToSpeech() {
     return textToSpeech;
+  }
+
+  /** Account-owned reusable voice creation operations. */
+  public CreateVoiceResource createVoice() {
+    return createVoice;
+  }
+
+  /** Account-owned reusable voice listing operations. */
+  public ListVoicesResource listVoices() {
+    return listVoices;
+  }
+
+  /** Account-owned reusable voice lookup operations. */
+  public GetVoiceResource getVoice() {
+    return getVoice;
   }
 
   /** Builder for {@link FishAudioClient}. */

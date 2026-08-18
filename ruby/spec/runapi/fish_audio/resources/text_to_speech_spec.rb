@@ -24,6 +24,14 @@ RSpec.describe RunApi::FishAudio::Resources::TextToSpeech do
     expect(result.billing.settlement.charged_amount_cents).to eq(2)
   end
 
+  it "POSTs a reusable voice id" do
+    params = {model: "s1", text: "Hello", voice_id: "voice_1"}
+    expect(http).to receive(:request).with(:post, endpoint, body: params)
+      .and_return("id" => "task_1", "status" => "completed", "audios" => [])
+
+    resource.run(**params)
+  end
+
   it "requires a transcript for every reference" do
     expect { resource.run(model: "s1", text: "Hello", references: [{audio: "UklGRg=="}]) }
       .to raise_error(RunApi::Core::ValidationError, /references\[0\]\.text is required/)

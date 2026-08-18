@@ -1,5 +1,21 @@
 # Changelog
 
+## [js/v0.3.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/js%2Fv0.3.0), [go/v0.3.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/go%2Fv0.3.0), [python/v0.4.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/python%2Fv0.4.0), [java/v0.3.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/java%2Fv0.3.0) - 2026-08-18
+
+### Added
+- Add typed create, list, and get resources for account-owned reusable voices.
+- Accept trained account-owned voice IDs in s1, s2-pro, and s2.1-pro text-to-speech requests.
+
+## [ruby/v0.3.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/ruby%2Fv0.3.0) - 2026-08-18
+
+### Added
+- Add typed create, list, and get resources for account-owned reusable voices.
+- Accept trained account-owned voice IDs in s1, s2-pro, and s2.1-pro text-to-speech requests.
+
+### Changed
+- Allow Ruby clients to install the core SDK release that adds persistent Files and multipart Uploads alongside this model SDK.
+
+
 ## [js/v0.2.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/js%2Fv0.2.0), [ruby/v0.2.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/ruby%2Fv0.2.0), [go/v0.2.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/go%2Fv0.2.0), [python/v0.3.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/python%2Fv0.3.0), [java/v0.2.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/java%2Fv0.2.0) - 2026-08-07
 
 ### Added

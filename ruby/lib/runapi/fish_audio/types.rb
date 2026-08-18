@@ -3,6 +3,28 @@
 module RunApi
   module FishAudio
     module Types
+      # An account-owned reusable voice.
+      class Voice < RunApi::Core::BaseModel
+        required :voice_id, String
+        optional :name, String
+        required :state, String
+      end
+
+      # Response containing one reusable voice.
+      class VoiceResponse < RunApi::Core::BaseModel
+        required :voice, -> { Voice }
+        required :billing, RunApi::Core::TaskBillingFacts
+      end
+
+      # Paginated response containing account-owned reusable voices.
+      class VoicesResponse < RunApi::Core::BaseModel
+        required :voices, [-> { Voice }]
+        required :total, Integer
+        required :page_number, Integer
+        required :page_size, Integer
+        required :billing, RunApi::Core::TaskBillingFacts
+      end
+
       # A RunAPI-managed audio result.
       class Audio < RunApi::Core::BaseModel
         required :url, String

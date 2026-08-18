@@ -1,4 +1,43 @@
 export const contract = {
+  "create-voice": {
+    "models": [],
+    "fields_by_model": {
+      "_": {
+        "name": {
+          "required": true
+        },
+        "source_audio_url": {
+          "required": true
+        }
+      }
+    }
+  },
+  "get-voice": {
+    "models": [],
+    "fields_by_model": {
+      "_": {
+        "voice_id": {
+          "required": true
+        }
+      }
+    }
+  },
+  "list-voices": {
+    "models": [],
+    "fields_by_model": {
+      "_": {
+        "page_number": {
+          "min": 1,
+          "type": "integer"
+        },
+        "page_size": {
+          "min": 1,
+          "max": 100,
+          "type": "integer"
+        }
+      }
+    }
+  },
   "text-to-speech": {
     "models": [
       "s1",

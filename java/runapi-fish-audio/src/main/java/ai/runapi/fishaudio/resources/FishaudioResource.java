@@ -47,6 +47,26 @@ abstract class FishaudioResource {
         responseType);
   }
 
+  final <T> T runSyncGet(
+      String action,
+      Map<String, Object> params,
+      String path,
+      Map<String, String> query,
+      RequestOptions requestOptions,
+      Class<T> responseType) {
+    Objects.requireNonNull(action, "action");
+    Objects.requireNonNull(params, "params");
+    Objects.requireNonNull(path, "path");
+    Objects.requireNonNull(query, "query");
+    Objects.requireNonNull(requestOptions, "requestOptions");
+    ContractValidator.validate(action, params);
+    HttpRequest.Builder request = HttpRequest.builder(HttpMethod.GET, path).options(requestOptions);
+    for (Map.Entry<String, String> entry : query.entrySet()) {
+      request.query(entry.getKey(), entry.getValue());
+    }
+    return executor.send(request.build(), responseType);
+  }
+
   final <T extends TaskResponse> T getTask(String id, RequestOptions requestOptions, Class<T> responseType) {
     String checkedId = requireNonBlank(id, "id");
     return executor.send(

@@ -1,4 +1,43 @@
 CONTRACT = {
+    "create-voice": {
+        "models": [],
+        "fields_by_model": {
+            "_": {
+                "name": {
+                    "required": True
+                },
+                "source_audio_url": {
+                    "required": True
+                }
+            }
+        }
+    },
+    "get-voice": {
+        "models": [],
+        "fields_by_model": {
+            "_": {
+                "voice_id": {
+                    "required": True
+                }
+            }
+        }
+    },
+    "list-voices": {
+        "models": [],
+        "fields_by_model": {
+            "_": {
+                "page_number": {
+                    "min": 1,
+                    "type": "integer"
+                },
+                "page_size": {
+                    "min": 1,
+                    "max": 100,
+                    "type": "integer"
+                }
+            }
+        }
+    },
     "text-to-speech": {
         "models": ["s1", "s2-pro", "s2.1-pro"],
         "fields_by_model": {

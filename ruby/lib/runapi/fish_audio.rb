@@ -3,6 +3,9 @@
 require "runapi/core"
 require_relative "fish_audio/types"
 require_relative "fish_audio/contract_gen"
+require_relative "fish_audio/resources/create_voice"
+require_relative "fish_audio/resources/list_voices"
+require_relative "fish_audio/resources/get_voice"
 require_relative "fish_audio/resources/text_to_speech"
 require_relative "fish_audio/client"
 

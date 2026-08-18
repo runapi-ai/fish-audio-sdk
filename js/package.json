@@ -3,8 +3,8 @@
   "runapi": {
     "slug": "fish-audio"
   },
-  "version": "0.2.0",
-  "description": "RunAPI Fish Audio SDK for speech generation in JavaScript, Python, Ruby, Go, Java, and PHP",
+  "version": "0.3.0",
+  "description": "RunAPI Fish Audio SDK for account-owned voice resources and speech generation in JavaScript, Python, Ruby, Go, Java, and PHP",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -30,7 +30,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@runapi.ai/core": "^0.3.3"
+    "@runapi.ai/core": "^0.4.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
