@@ -21,7 +21,7 @@ class TextToSpeech(Resource):
         compacted = self._compact_params(params)
         self._validate_contract(CONTRACT["text-to-speech"], compacted)
         self._validate_references(compacted.get("references"))
-        return self._request("post", self.ENDPOINT, body=compacted, options=options)
+        return self._run_hybrid("post", self.ENDPOINT, body=compacted, options=options)
 
     @staticmethod
     def _validate_references(references: Any) -> None:

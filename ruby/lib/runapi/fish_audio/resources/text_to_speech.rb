@@ -18,7 +18,14 @@ module RunApi
           params = compact_params(params)
           validate_contract!(CONTRACT["text-to-speech"], params)
           validate_references!(params[:references])
-          request(:post, ENDPOINT, body: params, options: options)
+          run_hybrid(ENDPOINT, body: params, options: options, response_class: RESPONSE_CLASS)
+        end
+
+        def subscribe(options: nil, **params)
+          params = compact_params(params)
+          validate_contract!(CONTRACT["text-to-speech"], params)
+          validate_references!(params[:references])
+          subscribe_hybrid(ENDPOINT, body: params, options: options, response_class: RESPONSE_CLASS)
         end
 
         private

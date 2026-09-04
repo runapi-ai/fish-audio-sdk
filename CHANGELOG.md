@@ -1,5 +1,21 @@
 # Changelog
 
+## [python/v0.5.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/python%2Fv0.5.0) - 2026-09-04
+
+### Added
+- Automatically follow accepted Task results for speech generation and voice creation.
+
+## [go/v0.4.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/go%2Fv0.4.0) - 2026-09-04
+
+### Added
+- Add Create, Subscribe, and automatic Run support for speech generation and voice creation when a Task is accepted.
+
+## [ruby/v0.4.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/ruby%2Fv0.4.0) - 2026-09-04
+
+### Added
+- Add run and subscribe support for hybrid Task responses.
+
+
 ## [js/v0.3.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/js%2Fv0.3.0), [go/v0.3.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/go%2Fv0.3.0), [python/v0.4.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/python%2Fv0.4.0), [java/v0.3.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/java%2Fv0.3.0) - 2026-08-18
 
 ### Added

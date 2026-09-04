@@ -12,6 +12,8 @@ result = client.text_to_speech.run(model="s2.1-pro", text="Hello [excited]", voi
 
 Pass optional `references` entries with base64-encoded raw audio bytes and exact transcripts for request-scoped voice matching.
 
+`create_voice.run()` and `text_to_speech.run()` return the same typed terminal result whether the request completes directly or is accepted for background processing. To resume an accepted request from its opaque Task Result URL, call `subscribe(location)` on the same resource.
+
 Use `list_voices` and `get_voice` to inspect account-owned voice resources. Only `trained` voices can be submitted for speech generation; a returned `voice_id` is a best-effort reference and may stop working later. Update, delete, revoke, or voice-library management methods are not provided; voice retention is not promised.
 
 The output defaults to MP3. Select WAV with `output_format`; `bitrate_kbps` applies only to MP3.

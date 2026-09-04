@@ -49,14 +49,32 @@ func NewClientWithHTTP(httpClient core.HTTPClient) *Client {
 // CreateVoice creates an account-owned reusable voice.
 type CreateVoice struct{ http core.HTTPClient }
 
-// Run creates an account-owned reusable voice synchronously.
-func (r *CreateVoice) Run(ctx context.Context, params CreateVoiceParams, opts ...option.RequestOption) (*VoiceResponse, error) {
+// Create submits voice creation and returns either its terminal response or an
+// accepted Task that can be resumed through Subscribe.
+func (r *CreateVoice) Create(ctx context.Context, params CreateVoiceParams, opts ...option.RequestOption) (*core.HybridCreateResponse[VoiceResponse], error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
 	body := core.CompactParams(params)
 	if err := core.ValidateParams(contractSchema["create-voice"], body); err != nil {
 		return nil, err
 	}
-	return core.PostJSON[VoiceResponse](ctx, r.http, voicesPath, body, requestOptions)
+	return core.CreateHybrid[VoiceResponse](ctx, r.http, voicesPath, body, requestOptions)
+}
+
+// Subscribe follows an accepted voice-creation Task to its terminal response.
+func (r *CreateVoice) Subscribe(ctx context.Context, acceptance *core.HybridAcceptance, opts ...option.RequestOption) (*VoiceResponse, error) {
+	requestOptions, pollingOptions := option.ResolveRequestOptions(opts...)
+	return core.SubscribeHybrid[VoiceResponse](ctx, r.http, acceptance, requestOptions, pollingOptions)
+}
+
+// Run returns the same voice response whether the endpoint completes directly
+// or first returns 202 Accepted.
+func (r *CreateVoice) Run(ctx context.Context, params CreateVoiceParams, opts ...option.RequestOption) (*VoiceResponse, error) {
+	requestOptions, pollingOptions := option.ResolveRequestOptions(opts...)
+	body := core.CompactParams(params)
+	if err := core.ValidateParams(contractSchema["create-voice"], body); err != nil {
+		return nil, err
+	}
+	return core.RunHybrid[VoiceResponse](ctx, r.http, voicesPath, body, requestOptions, pollingOptions)
 }
 
 // ListVoices lists reusable voices owned by the current account.
@@ -102,12 +120,30 @@ func (r *GetVoice) Run(ctx context.Context, params GetVoiceParams, opts ...optio
 // TextToSpeech generates RunAPI-managed audio from text.
 type TextToSpeech struct{ http core.HTTPClient }
 
-// Run generates speech synchronously.
-func (r *TextToSpeech) Run(ctx context.Context, params TextToSpeechParams, opts ...option.RequestOption) (*TextToSpeechResponse, error) {
+// Create submits speech generation and returns either its terminal response or
+// an accepted Task that can be resumed through Subscribe.
+func (r *TextToSpeech) Create(ctx context.Context, params TextToSpeechParams, opts ...option.RequestOption) (*core.HybridCreateResponse[TextToSpeechResponse], error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
 	body := core.CompactParams(params)
 	if err := core.ValidateParams(contractSchema["text-to-speech"], body); err != nil {
 		return nil, err
 	}
-	return core.PostJSON[TextToSpeechResponse](ctx, r.http, textToSpeechPath, body, requestOptions)
+	return core.CreateHybrid[TextToSpeechResponse](ctx, r.http, textToSpeechPath, body, requestOptions)
+}
+
+// Subscribe follows an accepted speech-generation Task to its terminal response.
+func (r *TextToSpeech) Subscribe(ctx context.Context, acceptance *core.HybridAcceptance, opts ...option.RequestOption) (*TextToSpeechResponse, error) {
+	requestOptions, pollingOptions := option.ResolveRequestOptions(opts...)
+	return core.SubscribeHybrid[TextToSpeechResponse](ctx, r.http, acceptance, requestOptions, pollingOptions)
+}
+
+// Run returns the same speech response whether the endpoint completes directly
+// or first returns 202 Accepted.
+func (r *TextToSpeech) Run(ctx context.Context, params TextToSpeechParams, opts ...option.RequestOption) (*TextToSpeechResponse, error) {
+	requestOptions, pollingOptions := option.ResolveRequestOptions(opts...)
+	body := core.CompactParams(params)
+	if err := core.ValidateParams(contractSchema["text-to-speech"], body); err != nil {
+		return nil, err
+	}
+	return core.RunHybrid[TextToSpeechResponse](ctx, r.http, textToSpeechPath, body, requestOptions, pollingOptions)
 }

@@ -3,9 +3,13 @@ package fishaudio
 import (
 	"context"
 	"encoding/json"
+	"net/http"
+	"net/http/httptest"
 	"testing"
+	"time"
 
 	"github.com/runapi-ai/core-sdk/go/core"
+	"github.com/runapi-ai/core-sdk/go/option"
 )
 
 type stubHTTPClient struct {
@@ -24,6 +28,48 @@ func (s *stubHTTPClient) Request(_ context.Context, method, path string, opts *c
 		s.query = opts.Query
 	}
 	return s.response, nil
+}
+
+func (s *stubHTTPClient) RequestWithResponse(ctx context.Context, method, path string, opts *core.HTTPRequestOptions) (*core.HTTPResponse, error) {
+	payload, err := s.Request(ctx, method, path, opts)
+	if err != nil {
+		return nil, err
+	}
+	return &core.HTTPResponse{Body: payload, StatusCode: http.StatusOK, Header: make(http.Header)}, nil
+}
+
+func TestCreateVoiceRunFollowsAcceptedTaskLocation(t *testing.T) {
+	requests := 0
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		requests++
+		switch requests {
+		case 1:
+			if r.Method != http.MethodPost || r.URL.Path != voicesPath || r.Header.Get("Idempotency-Key") == "" {
+				t.Fatalf("unexpected create request: %s %s", r.Method, r.URL.Path)
+			}
+			w.Header().Set("Location", "/api/v1/tasks/voice_task")
+			w.Header().Set("Retry-After", "0")
+			w.WriteHeader(http.StatusAccepted)
+			_, _ = w.Write([]byte(`{"id":"voice_task","status":"processing"}`))
+		case 2:
+			_, _ = w.Write([]byte(`{"id":"voice_task","status":"completed","response":{"status":200,"content_type":"application/json; charset=utf-8","headers":{},"body":{"voice":{"voice_id":"voice_1","name":"Narrator","state":"training"}}}}`))
+		default:
+			t.Fatalf("unexpected request %d", requests)
+		}
+	}))
+	defer server.Close()
+
+	client, err := NewClient(option.WithAPIKey("test-key"), option.WithBaseURL(server.URL))
+	if err != nil {
+		t.Fatal(err)
+	}
+	result, err := client.CreateVoice.Run(context.Background(), CreateVoiceParams{Name: "Narrator", SourceAudioURL: "https://cdn.runapi.ai/narrator.mp3"}, option.WithPollInterval(time.Millisecond))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.Voice.VoiceID != "voice_1" {
+		t.Fatalf("unexpected terminal result: %#v", result)
+	}
 }
 
 func TestCreateVoiceRun(t *testing.T) {

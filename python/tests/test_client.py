@@ -1,6 +1,6 @@
 import pytest
 
-from runapi.core import config
+from runapi.core import ApiResponse, config
 from runapi.core.errors import ValidationError
 from runapi.fish_audio import FishAudioClient
 from runapi.fish_audio.types import TextToSpeechResponse, VoiceResponse, VoicesResponse
@@ -10,9 +10,11 @@ class FakeHttp:
     def __init__(self, *responses):
         self._responses = list(responses)
         self.calls = []
+        self.options = []
 
     def request(self, method, path, body=None, options=None):
         self.calls.append((method, path, body))
+        self.options.append(options)
         return self._responses.pop(0)
 
 
@@ -77,6 +79,61 @@ def test_create_voice_posts_public_params_and_decodes_voice():
     assert isinstance(result, VoiceResponse)
     assert result.voice.state == "training"
     assert result.billing.settlement.amount_micro_cents == 0
+
+
+@pytest.mark.parametrize(
+    ("resource_name", "params", "endpoint", "terminal_body", "response_class"),
+    [
+        (
+            "text_to_speech",
+            {"model": "s1", "text": "Hello"},
+            "/api/v1/fish_audio/text_to_speech",
+            {"id": "task_1", "status": "completed", "audios": []},
+            TextToSpeechResponse,
+        ),
+        (
+            "create_voice",
+            {"name": "Narrator", "source_audio_url": "https://cdn.runapi.ai/narrator.mp3"},
+            "/api/v1/fish_audio/voices",
+            {
+                "voice": {"voice_id": "voice_1", "name": "Narrator", "state": "training"},
+                "billing": {
+                    "reservation": None,
+                    "settlement": {"charged_amount_cents": 0, "amount_micro_cents": 0},
+                    "refund": None,
+                },
+            },
+            VoiceResponse,
+        ),
+    ],
+)
+def test_hybrid_resources_follow_accepted_task_result(
+    resource_name, params, endpoint, terminal_body, response_class
+):
+    location = "https://runapi.ai/api/v1/tasks/task_1"
+    fake = FakeHttp(
+        ApiResponse({"id": "task_1", "status": "processing"}, {"Location": location}, status_code=202),
+        ApiResponse(
+            {
+                "id": "task_1",
+                "status": "completed",
+                "response": {
+                    "status": 200,
+                    "content_type": "application/json",
+                    "headers": {},
+                    "body": terminal_body,
+                },
+            }
+        ),
+    )
+    client = FishAudioClient(api_key="k", http_client=fake)
+
+    result = getattr(client, resource_name).run(**params)
+
+    assert isinstance(result, response_class)
+    assert [call[:2] for call in fake.calls] == [("post", endpoint), ("get", location)]
+    assert fake.options[0].headers["Idempotency-Key"]
+    assert fake.options[1].headers == fake.options[0].headers
 
 
 def test_list_voices_gets_account_owned_page():

@@ -7,7 +7,7 @@ RSpec.describe "Fish Audio reusable voice resources" do
 
   it "creates an account-owned reusable voice" do
     params = {name: "Narrator", source_audio_url: "https://cdn.runapi.ai/narrator.mp3"}
-    expect(http).to receive(:request).with(:post, "/api/v1/fish_audio/voices", body: params)
+    expect(http).to receive(:request).with(:post, "/api/v1/fish_audio/voices", body: params, options: anything)
       .and_return(
         "voice" => {"voice_id" => "voice_1", "name" => "Narrator", "state" => "training"},
         "billing" => {"reservation" => nil, "settlement" => {"charged_amount_cents" => 0, "amount_micro_cents" => 0}, "refund" => nil}

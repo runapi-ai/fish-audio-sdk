@@ -15,7 +15,7 @@ RSpec.describe RunApi::FishAudio::Resources::TextToSpeech do
       sample_rate_hz: 24_000,
       references: [{audio: "UklGRg==", text: "Reference transcript"}]
     }
-    expect(http).to receive(:request).with(:post, endpoint, body: params)
+    expect(http).to receive(:request).with(:post, endpoint, body: params, options: anything)
       .and_return("id" => "task_1", "status" => "completed", "audios" => [{"url" => "https://runapi.ai/audio.mp3", "format" => "mp3", "mime_type" => "audio/mpeg", "size_bytes" => 128}], "billing" => {"reservation" => nil, "settlement" => {"charged_amount_cents" => 2, "amount_micro_cents" => 2_000_000}, "refund" => nil})
 
     result = resource.run(**params)
@@ -26,7 +26,7 @@ RSpec.describe RunApi::FishAudio::Resources::TextToSpeech do
 
   it "POSTs a reusable voice id" do
     params = {model: "s1", text: "Hello", voice_id: "voice_1"}
-    expect(http).to receive(:request).with(:post, endpoint, body: params)
+    expect(http).to receive(:request).with(:post, endpoint, body: params, options: anything)
       .and_return("id" => "task_1", "status" => "completed", "audios" => [])
 
     resource.run(**params)
