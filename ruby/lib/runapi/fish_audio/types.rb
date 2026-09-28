@@ -13,7 +13,6 @@ module RunApi
       # Response containing one reusable voice.
       class VoiceResponse < RunApi::Core::BaseModel
         required :voice, -> { Voice }
-        required :billing, RunApi::Core::TaskBillingFacts
       end
 
       # Paginated response containing account-owned reusable voices.
@@ -22,7 +21,6 @@ module RunApi
         required :total, Integer
         required :page_number, Integer
         required :page_size, Integer
-        required :billing, RunApi::Core::TaskBillingFacts
       end
 
       # A RunAPI-managed audio result.

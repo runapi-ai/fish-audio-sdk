@@ -16,12 +16,11 @@ RSpec.describe RunApi::FishAudio::Resources::TextToSpeech do
       references: [{audio: "UklGRg==", text: "Reference transcript"}]
     }
     expect(http).to receive(:request).with(:post, endpoint, body: params, options: anything)
-      .and_return("id" => "task_1", "status" => "completed", "audios" => [{"url" => "https://runapi.ai/audio.mp3", "format" => "mp3", "mime_type" => "audio/mpeg", "size_bytes" => 128}], "billing" => {"reservation" => nil, "settlement" => {"charged_amount_cents" => 2, "amount_micro_cents" => 2_000_000}, "refund" => nil})
+      .and_return("id" => "task_1", "status" => "completed", "audios" => [{"url" => "https://runapi.ai/audio.mp3", "format" => "mp3", "mime_type" => "audio/mpeg", "size_bytes" => 128}])
 
     result = resource.run(**params)
     expect(result).to be_a(RunApi::FishAudio::Types::TextToSpeechResponse)
     expect(result.audios.first.format).to eq("mp3")
-    expect(result.billing.settlement.charged_amount_cents).to eq(2)
   end
 
   it "POSTs a reusable voice id" do

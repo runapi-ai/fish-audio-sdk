@@ -49,7 +49,7 @@ class FishAudioClientTest {
 
   @Test
   void runSendsExpectedRequestShape() throws Exception {
-    CapturingTransport transport = new CapturingTransport("{\"id\":\"sync_123\",\"status\":\"completed\",\"audios\":[{\"url\":\"https://file.runapi.ai/generated.mp3\",\"format\":\"mp3\",\"mime_type\":\"audio/mpeg\",\"size_bytes\":128}],\"billing\":{\"settlement\":{\"charged_amount_cents\":11,\"amount_micro_cents\":1050000}},\"custom\":\"kept\"}");
+    CapturingTransport transport = new CapturingTransport("{\"id\":\"sync_123\",\"status\":\"completed\",\"audios\":[{\"url\":\"https://file.runapi.ai/generated.mp3\",\"format\":\"mp3\",\"mime_type\":\"audio/mpeg\",\"size_bytes\":128}],\"custom\":\"kept\",\"usage\":{\"cost\":0.05}}");
     FishAudioClient client = FishAudioClient.builder().apiKey("sk-test").transport(transport).build();
 
     client.textToSpeech().run(
@@ -75,7 +75,7 @@ class FishAudioClientTest {
 
   @Test
   void sendsReusableVoiceId() throws Exception {
-    CapturingTransport transport = new CapturingTransport("{\"id\":\"sync_123\",\"status\":\"completed\",\"audios\":[]}");
+    CapturingTransport transport = new CapturingTransport("{\"id\":\"sync_123\",\"status\":\"completed\",\"audios\":[],\"usage\":{\"cost\":0.05}}");
     FishAudioClient client = FishAudioClient.builder().apiKey("sk-test").transport(transport).build();
 
     client.textToSpeech().run(
@@ -91,7 +91,7 @@ class FishAudioClientTest {
 
   @Test
   void createsPrivateReusableVoice() throws Exception {
-    CapturingTransport transport = new CapturingTransport("{\"voice\":{\"voice_id\":\"voice_1\",\"name\":\"Narrator\",\"state\":\"training\"},\"billing\":{\"reservation\":null,\"settlement\":{\"charged_amount_cents\":0,\"amount_micro_cents\":0},\"refund\":null}}");
+    CapturingTransport transport = new CapturingTransport("{\"voice\":{\"voice_id\":\"voice_1\",\"name\":\"Narrator\",\"state\":\"training\"}}");
     FishAudioClient client = FishAudioClient.builder().apiKey("sk-test").transport(transport).build();
 
     VoiceResponse response = client.createVoice().run(
@@ -104,12 +104,12 @@ class FishAudioClientTest {
     assertEquals("/api/v1/fish_audio/voices", transport.request.getPath());
     assertEquals("https://cdn.runapi.ai/narrator.mp3", bodyJson(transport.request).get("source_audio_url").asText());
     assertEquals("training", response.getVoice().getState());
-    assertEquals(Long.valueOf(0), response.getBilling().getSettlement().getChargedAmountCents());
+
   }
 
   @Test
   void listsAccountOwnedReusableVoices() {
-    CapturingTransport transport = new CapturingTransport("{\"voices\":[{\"voice_id\":\"voice_1\",\"name\":\"Narrator\",\"state\":\"trained\"}],\"total\":1,\"page_number\":2,\"page_size\":25,\"billing\":{\"reservation\":null,\"settlement\":{\"charged_amount_cents\":0,\"amount_micro_cents\":0},\"refund\":null}}");
+    CapturingTransport transport = new CapturingTransport("{\"voices\":[{\"voice_id\":\"voice_1\",\"name\":\"Narrator\",\"state\":\"trained\"}],\"total\":1,\"page_number\":2,\"page_size\":25}");
     FishAudioClient client = FishAudioClient.builder().apiKey("sk-test").transport(transport).build();
 
     VoicesResponse response = client.listVoices().run(
@@ -120,12 +120,12 @@ class FishAudioClientTest {
     assertEquals("2", transport.request.getQuery().get("page_number"));
     assertEquals("25", transport.request.getQuery().get("page_size"));
     assertEquals("voice_1", response.getVoices().get(0).getVoiceId());
-    assertEquals(Long.valueOf(0), response.getBilling().getSettlement().getChargedAmountCents());
+
   }
 
   @Test
   void getsEncodedAccountOwnedReusableVoiceId() {
-    CapturingTransport transport = new CapturingTransport("{\"voice\":{\"voice_id\":\"voice/1\",\"name\":\"Narrator\",\"state\":\"trained\"},\"billing\":{\"reservation\":null,\"settlement\":{\"charged_amount_cents\":0,\"amount_micro_cents\":0},\"refund\":null}}");
+    CapturingTransport transport = new CapturingTransport("{\"voice\":{\"voice_id\":\"voice/1\",\"name\":\"Narrator\",\"state\":\"trained\"}}");
     FishAudioClient client = FishAudioClient.builder().apiKey("sk-test").transport(transport).build();
 
     VoiceResponse response = client.getVoice().run(GetVoiceParams.builder().voiceId("voice/1").build());
@@ -133,12 +133,12 @@ class FishAudioClientTest {
     assertEquals("GET", transport.request.getMethod().name());
     assertEquals("/api/v1/fish_audio/voices/voice%2F1", transport.request.getPath());
     assertEquals("trained", response.getVoice().getState());
-    assertEquals(Long.valueOf(0), response.getBilling().getSettlement().getChargedAmountCents());
+
   }
 
   @Test
   void runDecodesResponseAndExtraFields() {
-    CapturingTransport transport = new CapturingTransport("{\"id\":\"sync_123\",\"status\":\"completed\",\"audios\":[{\"url\":\"https://file.runapi.ai/generated.mp3\",\"format\":\"mp3\",\"mime_type\":\"audio/mpeg\",\"size_bytes\":128}],\"billing\":{\"settlement\":{\"charged_amount_cents\":11,\"amount_micro_cents\":1050000}},\"custom\":\"kept\"}");
+    CapturingTransport transport = new CapturingTransport("{\"id\":\"sync_123\",\"status\":\"completed\",\"audios\":[{\"url\":\"https://file.runapi.ai/generated.mp3\",\"format\":\"mp3\",\"mime_type\":\"audio/mpeg\",\"size_bytes\":128}],\"custom\":\"kept\",\"usage\":{\"cost\":0.05}}");
     FishAudioClient client = FishAudioClient.builder().apiKey("sk-test").transport(transport).build();
 
     TextToSpeechResponse response = client.textToSpeech().run(
@@ -154,13 +154,13 @@ class FishAudioClientTest {
     assertEquals("completed", response.getStatus().value());
     assertEquals("audio/mpeg", response.getAudios().get(0).getMimeType());
     assertEquals(Long.valueOf(128), response.getAudios().get(0).getSizeBytes());
-    assertEquals(Long.valueOf(11), response.getBilling().getSettlement().getChargedAmountCents());
+    assertEquals(0.05d, response.getUsage().getCost());
     assertEquals("kept", response.extraFields().get("custom").asText());
   }
 
     @Test
     void coversTexttospeechResourceMethods() {
-      CapturingTransport transport = new CapturingTransport("{\"id\":\"sync_text_to_speech\",\"status\":\"completed\",\"audios\":[{\"url\":\"https://file.runapi.ai/generated.mp3\",\"format\":\"mp3\",\"mime_type\":\"audio/mpeg\",\"size_bytes\":128}],\"billing\":{\"settlement\":{\"charged_amount_cents\":11,\"amount_micro_cents\":1050000}}}");
+      CapturingTransport transport = new CapturingTransport("{\"id\":\"sync_text_to_speech\",\"status\":\"completed\",\"audios\":[{\"url\":\"https://file.runapi.ai/generated.mp3\",\"format\":\"mp3\",\"mime_type\":\"audio/mpeg\",\"size_bytes\":128}],\"usage\":{\"cost\":0.05}}");
       FishAudioClient client = FishAudioClient.builder().apiKey("sk-test").transport(transport).build();
 
       TextToSpeechResponse response = client.textToSpeech().run(
@@ -170,9 +170,8 @@ class FishAudioClientTest {
                   .build()
       );
       assertNotNull(response);
-      assertEquals(Long.valueOf(11), response.getBilling().getSettlement().getChargedAmountCents());
-
-      CapturingTransport transportWithOptions = new CapturingTransport("{\"id\":\"sync_text_to_speech_options\",\"status\":\"completed\",\"audios\":[{\"url\":\"https://file.runapi.ai/generated.mp3\",\"format\":\"mp3\",\"mime_type\":\"audio/mpeg\",\"size_bytes\":128}],\"billing\":{\"settlement\":{\"charged_amount_cents\":11,\"amount_micro_cents\":1050000}}}");
+      assertEquals(0.05d, response.getUsage().getCost());
+      CapturingTransport transportWithOptions = new CapturingTransport("{\"id\":\"sync_text_to_speech_options\",\"status\":\"completed\",\"audios\":[{\"url\":\"https://file.runapi.ai/generated.mp3\",\"format\":\"mp3\",\"mime_type\":\"audio/mpeg\",\"size_bytes\":128}],\"usage\":{\"cost\":0.05}}");
       FishAudioClient clientWithOptions = FishAudioClient.builder().apiKey("sk-test").transport(transportWithOptions).build();
       assertNotNull(clientWithOptions.textToSpeech().run(
               TextToSpeechParams.builder()

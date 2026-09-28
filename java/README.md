@@ -3,7 +3,7 @@
 Install the SDK:
 
 ```kotlin
-implementation("ai.runapi:runapi-fish-audio:0.3.0")
+implementation("ai.runapi:runapi-fish-audio:0.3.1")
 ```
 
 Create a `FishAudioClient`.

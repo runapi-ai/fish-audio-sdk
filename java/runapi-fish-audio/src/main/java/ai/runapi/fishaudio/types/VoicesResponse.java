@@ -1,6 +1,5 @@
 package ai.runapi.fishaudio.types;
 
-import ai.runapi.core.billing.TaskBillingFacts;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Collections;
 import java.util.List;
@@ -18,9 +17,6 @@ public class VoicesResponse {
 
   @JsonProperty("page_size")
   private Integer pageSize;
-
-  @JsonProperty("billing")
-  private TaskBillingFacts billing;
 
   /** Returns account-owned reusable voices. */
   public List<Voice> getVoices() {
@@ -40,10 +36,5 @@ public class VoicesResponse {
   /** Returns the current page size. */
   public Integer getPageSize() {
     return pageSize;
-  }
-
-  /** Returns persisted billing facts for this request. */
-  public TaskBillingFacts getBilling() {
-    return billing;
   }
 }

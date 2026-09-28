@@ -46,13 +46,11 @@ type Voice struct {
 
 // VoiceResponse wraps one reusable voice.
 type VoiceResponse struct {
-	core.TaskBillingFacts
 	Voice Voice `json:"voice"`
 }
 
 // VoicesResponse lists account-owned reusable voices.
 type VoicesResponse struct {
-	core.TaskBillingFacts
 	Voices     []Voice `json:"voices"`
 	Total      int     `json:"total"`
 	PageNumber int     `json:"page_number"`
@@ -69,7 +67,7 @@ type Audio struct {
 
 // TextToSpeechResponse is the completed synchronous speech result.
 type TextToSpeechResponse struct {
-	core.TaskBillingFacts
+	Usage *core.TaskUsage `json:"usage,omitempty"`
 	ID     string  `json:"id"`
 	Status string  `json:"status"`
 	Audios []Audio `json:"audios"`

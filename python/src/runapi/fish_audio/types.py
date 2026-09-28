@@ -1,6 +1,6 @@
 """Fish Audio response models."""
 
-from runapi.core import BaseModel, TaskBillingFacts, TaskResponse, optional, required
+from runapi.core import BaseModel, TaskResponse, optional, required
 
 
 class Voice(BaseModel):
@@ -15,7 +15,6 @@ class VoiceResponse(BaseModel):
     """Response containing one reusable voice."""
 
     voice = required(lambda: Voice)
-    billing = required(lambda: TaskBillingFacts)
 
 
 class VoicesResponse(BaseModel):
@@ -25,7 +24,6 @@ class VoicesResponse(BaseModel):
     total = required(int)
     page_number = required(int)
     page_size = required(int)
-    billing = required(lambda: TaskBillingFacts)
 
 
 class Audio(BaseModel):

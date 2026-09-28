@@ -13,7 +13,6 @@ describe('Fish Audio resources', () => {
   it('creates an account-owned reusable voice', async () => {
     vi.mocked(mockHttp.request).mockResolvedValueOnce({
       voice: { voice_id: 'voice_1', name: 'Narrator', state: 'training' },
-      billing: { reservation: null, settlement: { charged_amount_cents: 0, amount_micro_cents: 0 }, refund: null },
     });
     const resource = new CreateVoice(mockHttp);
 
@@ -26,7 +25,8 @@ describe('Fish Audio resources', () => {
       body: { name: 'Narrator', source_audio_url: 'https://cdn.runapi.ai/narrator.mp3' },
     });
     expect(result.voice.state).toBe('training');
-    expect(result.billing.settlement?.amount_micro_cents).toBe(0);
+    expect(result).not.toHaveProperty('billing');
+    expect(result).not.toHaveProperty('usage');
   });
 
   it('lists account-owned reusable voices with pagination', async () => {
@@ -35,7 +35,6 @@ describe('Fish Audio resources', () => {
       total: 1,
       page_number: 2,
       page_size: 25,
-      billing: { reservation: null, settlement: { charged_amount_cents: 0, amount_micro_cents: 0 }, refund: null },
     });
     const resource = new ListVoices(mockHttp);
 
@@ -45,13 +44,13 @@ describe('Fish Audio resources', () => {
       query: { page_number: 2, page_size: 25 },
     });
     expect(result.voices[0]?.voice_id).toBe('voice_1');
-    expect(result.billing.settlement?.amount_micro_cents).toBe(0);
+    expect(result).not.toHaveProperty('billing');
+    expect(result).not.toHaveProperty('usage');
   });
 
   it('gets one account-owned reusable voice', async () => {
     vi.mocked(mockHttp.request).mockResolvedValueOnce({
       voice: { voice_id: 'voice/1', name: 'Narrator', state: 'trained' },
-      billing: { reservation: null, settlement: { charged_amount_cents: 0, amount_micro_cents: 0 }, refund: null },
     });
     const resource = new GetVoice(mockHttp);
 
@@ -59,7 +58,8 @@ describe('Fish Audio resources', () => {
 
     expect(mockHttp.request).toHaveBeenCalledWith('GET', '/api/v1/fish_audio/voices/voice%2F1', {});
     expect(result.voice.state).toBe('trained');
-    expect(result.billing.settlement?.amount_micro_cents).toBe(0);
+    expect(result).not.toHaveProperty('billing');
+    expect(result).not.toHaveProperty('usage');
   });
 
   it('posts text-to-speech params and decodes managed audio', async () => {
@@ -67,7 +67,7 @@ describe('Fish Audio resources', () => {
       id: 'task_1',
       status: 'completed',
       audios: [{ url: 'https://runapi.ai/rails/active_storage/audio.mp3', format: 'mp3', mime_type: 'audio/mpeg', size_bytes: 128 }],
-      billing: { reservation: null, settlement: { charged_amount_cents: 2, amount_micro_cents: 2_000_000 }, refund: null },
+      usage: { cost: 0.02 },
     });
     const resource = new TextToSpeech(mockHttp);
 
@@ -89,7 +89,7 @@ describe('Fish Audio resources', () => {
       },
     });
     expect(result.audios[0]?.format).toBe('mp3');
-    expect(result.billing.settlement?.charged_amount_cents).toBe(2);
+    expect(result.usage?.cost).toBe(0.02);
   });
 
   it('posts a reusable voice id for text-to-speech', async () => {

@@ -1,4 +1,4 @@
-import type { TaskBillingFacts, TaskResponse } from '@runapi.ai/core';
+import type { TaskResponse } from '@runapi.ai/core';
 
 /** A request-scoped reference audio sample. */
 export interface ReferenceAudio {
@@ -58,7 +58,6 @@ export interface Voice {
 /** Response containing one reusable voice. */
 export interface VoiceResponse {
   voice: Voice;
-  billing: TaskBillingFacts;
 }
 
 /** Paginated response containing account-owned reusable voices. */
@@ -67,7 +66,6 @@ export interface VoicesResponse {
   total: number;
   page_number: number;
   page_size: number;
-  billing: TaskBillingFacts;
 }
 
 /** A RunAPI-managed audio result. */
