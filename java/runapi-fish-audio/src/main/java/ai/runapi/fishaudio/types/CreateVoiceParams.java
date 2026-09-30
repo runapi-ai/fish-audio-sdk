@@ -9,8 +9,8 @@ public final class CreateVoiceParams {
   private final String sourceAudioUrl;
 
   private CreateVoiceParams(Builder builder) {
-    this.name = FishaudioParamUtils.requireNonBlank(builder.name, "name");
-    this.sourceAudioUrl = FishaudioParamUtils.requireNonBlank(builder.sourceAudioUrl, "sourceAudioUrl");
+    this.name = builder.name;
+    this.sourceAudioUrl = builder.sourceAudioUrl;
   }
 
   /** Creates a new builder. */
@@ -40,13 +40,13 @@ public final class CreateVoiceParams {
 
     /** Sets the voice name. */
     public Builder name(String value) {
-      this.name = FishaudioParamUtils.requireNonBlank(value, "name");
+      this.name = value;
       return this;
     }
 
     /** Sets the source audio URL. */
     public Builder sourceAudioUrl(String value) {
-      this.sourceAudioUrl = FishaudioParamUtils.requireNonBlank(value, "sourceAudioUrl");
+      this.sourceAudioUrl = value;
       return this;
     }
 

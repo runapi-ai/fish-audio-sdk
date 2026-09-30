@@ -10,8 +10,8 @@ public final class ReferenceAudio {
   private final String text;
 
   private ReferenceAudio(Builder builder) {
-    this.audio = FishaudioParamUtils.requireNonBlank(builder.audio, "audio");
-    this.text = FishaudioParamUtils.requireNonBlank(builder.text, "text");
+    this.audio = builder.audio;
+    this.text = builder.text;
   }
 
   /** Creates a new ReferenceAudio builder. */
@@ -45,13 +45,13 @@ public final class ReferenceAudio {
 
     /** Sets the base64-encoded raw audio bytes. */
     public Builder audio(String value) {
-      this.audio = FishaudioParamUtils.requireNonBlank(value, "audio");
+      this.audio = value;
       return this;
     }
 
     /** Sets the exact transcript of the reference audio. */
     public Builder text(String value) {
-      this.text = FishaudioParamUtils.requireNonBlank(value, "text");
+      this.text = value;
       return this;
     }
 

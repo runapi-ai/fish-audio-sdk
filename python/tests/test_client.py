@@ -1,7 +1,6 @@
 import pytest
 
 from runapi.core import ApiResponse, config
-from runapi.core.errors import ValidationError
 from runapi.fish_audio import FishAudioClient
 from runapi.fish_audio.types import TextToSpeechResponse, VoiceResponse, VoicesResponse
 
@@ -47,12 +46,6 @@ def test_run_posts_params_and_decodes_managed_audio():
     assert result.audios[0].format == "mp3"
 
 
-def test_run_requires_text():
-    client = FishAudioClient(api_key="k", http_client=FakeHttp())
-    with pytest.raises(ValidationError, match="text is required"):
-        client.text_to_speech.run(model="s1")
-
-
 def test_run_posts_reusable_voice_id():
     fake = FakeHttp({"id": "task_1", "status": "completed", "usage": {"cost": 0.05}, "audios": []})
     client = FishAudioClient(api_key="k", http_client=fake)
@@ -60,12 +53,6 @@ def test_run_posts_reusable_voice_id():
     client.text_to_speech.run(model="s1", text="Hello", voice_id="voice_1")
 
     assert fake.calls == [("post", "/api/v1/fish_audio/text_to_speech", {"model": "s1", "text": "Hello", "voice_id": "voice_1"})]
-
-
-def test_run_requires_reference_transcript():
-    client = FishAudioClient(api_key="k", http_client=FakeHttp())
-    with pytest.raises(ValidationError, match=r"references\[0\]\.text is required"):
-        client.text_to_speech.run(model="s1", text="Hello", references=[{"audio": "UklGRg=="}])
 
 
 def test_create_voice_posts_public_params_and_decodes_voice():

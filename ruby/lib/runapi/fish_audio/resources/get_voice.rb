@@ -15,8 +15,6 @@ module RunApi
         end
 
         def run(voice_id:, options: nil)
-          params = compact_params(voice_id: voice_id)
-          validate_contract!(CONTRACT["get-voice"], params)
           path = "#{ENDPOINT}/#{URI.encode_uri_component(voice_id)}"
           request(:get, path, options: options)
         end

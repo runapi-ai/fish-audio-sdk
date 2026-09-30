@@ -16,7 +16,6 @@ module RunApi
 
         def run(options: nil, **params)
           params = compact_params(params)
-          validate_contract!(CONTRACT["list-voices"], params)
           query = URI.encode_www_form(params)
           path = query.empty? ? ENDPOINT : "#{ENDPOINT}?#{query}"
           request(:get, path, options: options)

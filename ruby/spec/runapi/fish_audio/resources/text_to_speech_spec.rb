@@ -30,9 +30,4 @@ RSpec.describe RunApi::FishAudio::Resources::TextToSpeech do
 
     resource.run(**params)
   end
-
-  it "requires a transcript for every reference" do
-    expect { resource.run(model: "s1", text: "Hello", references: [{audio: "UklGRg=="}]) }
-      .to raise_error(RunApi::Core::ValidationError, /references\[0\]\.text is required/)
-  end
 end

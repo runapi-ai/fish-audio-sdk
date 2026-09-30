@@ -17,11 +17,11 @@ public final class TextToSpeechParams {
 
   private TextToSpeechParams(Builder builder) {
     this.model = builder.model;
-    this.text = FishaudioParamUtils.requireNonBlank(builder.text, "text");
+    this.text = builder.text;
     this.outputFormat = builder.outputFormat;
     this.sampleRateHz = builder.sampleRateHz;
     this.bitrateKbps = builder.bitrateKbps;
-    this.references = FishaudioParamUtils.list(builder.references, "references");
+    this.references = FishaudioParamUtils.list(builder.references);
     this.voiceId = builder.voiceId;
   }
 
@@ -54,7 +54,7 @@ public final class TextToSpeechParams {
     }
     List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
     for (ReferenceAudio item : values) {
-      result.add(item.toMap());
+      result.add(item == null ? null : item.toMap());
     }
     return java.util.Collections.unmodifiableList(result);
   }
@@ -79,20 +79,20 @@ public final class TextToSpeechParams {
 
     /** Sets the model slug using a string value. */
     public Builder model(String value) {
-      this.model = FishaudioParamUtils.requireNonBlankTrim(value, "model");
+      this.model = value;
       return this;
     }
 
 
     /** Sets the line text. */
     public Builder text(String value) {
-      this.text = FishaudioParamUtils.requireNonBlank(value, "text");
+      this.text = value;
       return this;
     }
 
     /** Sets the output audio format. */
     public Builder outputFormat(String value) {
-      this.outputFormat = FishaudioParamUtils.requireNonBlankTrim(value, "outputFormat");
+      this.outputFormat = value;
       return this;
     }
 
@@ -116,7 +116,7 @@ public final class TextToSpeechParams {
 
     /** Sets a reusable voice ID returned by create voice. */
     public Builder voiceId(String value) {
-      this.voiceId = FishaudioParamUtils.requireNonBlank(value, "voiceId");
+      this.voiceId = value;
       return this;
     }
 

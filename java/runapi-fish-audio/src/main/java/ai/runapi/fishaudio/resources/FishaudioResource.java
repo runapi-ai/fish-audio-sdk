@@ -3,7 +3,6 @@ package ai.runapi.fishaudio.resources;
 import ai.runapi.core.ApiRequestExecutor;
 import ai.runapi.core.ClientOptions;
 import ai.runapi.core.RequestOptions;
-import ai.runapi.core.contract.ContractValidator;
 import ai.runapi.core.http.HttpMethod;
 import ai.runapi.core.http.HttpRequest;
 import ai.runapi.core.http.HttpTransport;
@@ -31,7 +30,6 @@ abstract class FishaudioResource {
     Objects.requireNonNull(action, "action");
     Objects.requireNonNull(body, "body");
     Objects.requireNonNull(requestOptions, "requestOptions");
-    ContractValidator.validate(action, body);
     return executor.send(
         HttpRequest.builder(HttpMethod.POST, endpoint).body(new JsonRequestBody(body)).options(requestOptions).build(),
         TaskCreateResponse.class);
@@ -41,7 +39,6 @@ abstract class FishaudioResource {
     Objects.requireNonNull(action, "action");
     Objects.requireNonNull(body, "body");
     Objects.requireNonNull(requestOptions, "requestOptions");
-    ContractValidator.validate(action, body);
     return executor.send(
         HttpRequest.builder(HttpMethod.POST, endpoint).body(new JsonRequestBody(body)).options(requestOptions).build(),
         responseType);
@@ -49,17 +46,14 @@ abstract class FishaudioResource {
 
   final <T> T runSyncGet(
       String action,
-      Map<String, Object> params,
       String path,
       Map<String, String> query,
       RequestOptions requestOptions,
       Class<T> responseType) {
     Objects.requireNonNull(action, "action");
-    Objects.requireNonNull(params, "params");
     Objects.requireNonNull(path, "path");
     Objects.requireNonNull(query, "query");
     Objects.requireNonNull(requestOptions, "requestOptions");
-    ContractValidator.validate(action, params);
     HttpRequest.Builder request = HttpRequest.builder(HttpMethod.GET, path).options(requestOptions);
     for (Map.Entry<String, String> entry : query.entrySet()) {
       request.query(entry.getKey(), entry.getValue());

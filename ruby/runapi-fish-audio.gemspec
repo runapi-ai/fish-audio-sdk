@@ -4,7 +4,7 @@ Dir.chdir(__dir__) do
 
   Gem::Specification.new do |spec|
     spec.name = "runapi-fish-audio"
-    spec.version = "0.4.1"
+    spec.version = "0.5.0"
     spec.metadata["runapi_slug"] = "fish-audio"
     spec.authors = ["RunAPI"]
     spec.email = ["contact@runapi.ai"]
@@ -22,6 +22,6 @@ Dir.chdir(__dir__) do
     spec.files = Dir.glob("lib/**/*") + %w[LICENSE README.md]
     spec.extra_rdoc_files = ["README.md"]
         spec.require_paths = ["lib"]
-    spec.add_dependency "runapi-core", "~> 0.5.1"
+    spec.add_dependency "runapi-core", "~> 0.6.0"
   end
 end

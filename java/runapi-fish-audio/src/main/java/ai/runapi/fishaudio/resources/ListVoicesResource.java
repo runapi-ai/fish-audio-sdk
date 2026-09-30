@@ -23,6 +23,6 @@ public final class ListVoicesResource extends FishaudioResource {
 
   /** Lists account-owned reusable voices with per-request options. */
   public VoicesResponse run(ListVoicesParams params, RequestOptions options) {
-    return runSyncGet(params.action(), params.toMap(), ENDPOINT, params.toQuery(), options, VoicesResponse.class);
+    return runSyncGet(params.action(), ENDPOINT, params.toQuery(), options, VoicesResponse.class);
   }
 }

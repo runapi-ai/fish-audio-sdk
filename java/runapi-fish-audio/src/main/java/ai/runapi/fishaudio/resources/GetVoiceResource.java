@@ -28,7 +28,6 @@ public final class GetVoiceResource extends FishaudioResource {
     String encoded = encodePathSegment(params.voiceId());
     return runSyncGet(
         params.action(),
-        params.toMap(),
         ENDPOINT + "/" + encoded,
         Collections.<String, String>emptyMap(),
         options,

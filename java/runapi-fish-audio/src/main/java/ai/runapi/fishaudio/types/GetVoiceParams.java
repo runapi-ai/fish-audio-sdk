@@ -8,7 +8,7 @@ public final class GetVoiceParams {
   private final String voiceId;
 
   private GetVoiceParams(Builder builder) {
-    this.voiceId = FishaudioParamUtils.requireNonBlank(builder.voiceId, "voiceId");
+    this.voiceId = builder.voiceId;
   }
 
   /** Creates a new builder. */
@@ -39,7 +39,7 @@ public final class GetVoiceParams {
 
     /** Sets the reusable voice ID. */
     public Builder voiceId(String value) {
-      this.voiceId = FishaudioParamUtils.requireNonBlank(value, "voiceId");
+      this.voiceId = value;
       return this;
     }
 

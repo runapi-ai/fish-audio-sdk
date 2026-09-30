@@ -54,9 +54,6 @@ type CreateVoice struct{ http core.HTTPClient }
 func (r *CreateVoice) Create(ctx context.Context, params CreateVoiceParams, opts ...option.RequestOption) (*core.HybridCreateResponse[VoiceResponse], error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
 	body := core.CompactParams(params)
-	if err := core.ValidateParams(contractSchema["create-voice"], body); err != nil {
-		return nil, err
-	}
 	return core.CreateHybrid[VoiceResponse](ctx, r.http, voicesPath, body, requestOptions)
 }
 
@@ -71,9 +68,6 @@ func (r *CreateVoice) Subscribe(ctx context.Context, acceptance *core.HybridAcce
 func (r *CreateVoice) Run(ctx context.Context, params CreateVoiceParams, opts ...option.RequestOption) (*VoiceResponse, error) {
 	requestOptions, pollingOptions := option.ResolveRequestOptions(opts...)
 	body := core.CompactParams(params)
-	if err := core.ValidateParams(contractSchema["create-voice"], body); err != nil {
-		return nil, err
-	}
 	return core.RunHybrid[VoiceResponse](ctx, r.http, voicesPath, body, requestOptions, pollingOptions)
 }
 
@@ -84,9 +78,6 @@ type ListVoices struct{ http core.HTTPClient }
 func (r *ListVoices) Run(ctx context.Context, params ListVoicesParams, opts ...option.RequestOption) (*VoicesResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
 	body := core.CompactParams(params)
-	if err := core.ValidateParams(contractSchema["list-voices"], body); err != nil {
-		return nil, err
-	}
 	query := make(map[string]string, len(body))
 	if params.PageNumber != 0 {
 		query["page_number"] = strconv.Itoa(params.PageNumber)
@@ -109,10 +100,6 @@ type GetVoice struct{ http core.HTTPClient }
 // Run gets one account-owned reusable voice synchronously.
 func (r *GetVoice) Run(ctx context.Context, params GetVoiceParams, opts ...option.RequestOption) (*VoiceResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
-	body := core.CompactParams(params)
-	if err := core.ValidateParams(contractSchema["get-voice"], body); err != nil {
-		return nil, err
-	}
 	path := voicesPath + "/" + url.PathEscape(params.VoiceID)
 	return core.GetJSON[VoiceResponse](ctx, r.http, path, requestOptions)
 }
@@ -125,9 +112,6 @@ type TextToSpeech struct{ http core.HTTPClient }
 func (r *TextToSpeech) Create(ctx context.Context, params TextToSpeechParams, opts ...option.RequestOption) (*core.HybridCreateResponse[TextToSpeechResponse], error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
 	body := core.CompactParams(params)
-	if err := core.ValidateParams(contractSchema["text-to-speech"], body); err != nil {
-		return nil, err
-	}
 	return core.CreateHybrid[TextToSpeechResponse](ctx, r.http, textToSpeechPath, body, requestOptions)
 }
 
@@ -142,8 +126,5 @@ func (r *TextToSpeech) Subscribe(ctx context.Context, acceptance *core.HybridAcc
 func (r *TextToSpeech) Run(ctx context.Context, params TextToSpeechParams, opts ...option.RequestOption) (*TextToSpeechResponse, error) {
 	requestOptions, pollingOptions := option.ResolveRequestOptions(opts...)
 	body := core.CompactParams(params)
-	if err := core.ValidateParams(contractSchema["text-to-speech"], body); err != nil {
-		return nil, err
-	}
 	return core.RunHybrid[TextToSpeechResponse](ctx, r.http, textToSpeechPath, body, requestOptions, pollingOptions)
 }
