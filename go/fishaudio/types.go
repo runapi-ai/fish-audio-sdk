@@ -16,7 +16,7 @@ type TextToSpeechParams struct {
 	OutputFormat string           `json:"output_format,omitempty" help:"optional; output audio format (mp3 or wav); defaults to mp3"`
 	SampleRateHz int              `json:"sample_rate_hz,omitempty" help:"optional; output sample rate in hertz"`
 	BitrateKbps  int              `json:"bitrate_kbps,omitempty" help:"optional; MP3 bitrate in kilobits per second; not allowed for WAV"`
-	References   []ReferenceAudio `json:"references,omitempty" help:"optional; request-scoped reference audio samples with base64 audio and exact transcripts"`
+	References   []ReferenceAudio `json:"references,omitempty" help:"optional; request-scoped at most one HTTPS reference audio sample and its exact transcript; mutually exclusive with voice_id"`
 	VoiceID      string           `json:"voice_id,omitempty" help:"optional; reusable voice ID returned by create-voice"`
 }
 

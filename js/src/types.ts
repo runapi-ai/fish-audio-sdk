@@ -2,7 +2,7 @@ import type { TaskResponse } from '@runapi.ai/core';
 
 /** A request-scoped reference audio sample. */
 export interface ReferenceAudio {
-  /** Base64-encoded raw audio bytes. */
+  /** Publicly accessible HTTPS audio URL. */
   audio: string;
   /** Exact transcript of the reference audio. */
   text: string;
@@ -20,7 +20,7 @@ export interface TextToSpeechParams {
   sample_rate_hz?: 8000 | 16000 | 24000 | 32000 | 44100;
   /** MP3 bitrate in kilobits per second. Not allowed for WAV. */
   bitrate_kbps?: 64 | 128 | 192;
-  /** Optional request-scoped reference audio samples. */
+  /** At most one request-scoped HTTPS audio sample. Mutually exclusive with voice_id. */
   references?: ReferenceAudio[];
   /** Reusable voice ID returned by `createVoice`. */
   voice_id?: string;

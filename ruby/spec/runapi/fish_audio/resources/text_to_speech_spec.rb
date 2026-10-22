@@ -13,7 +13,7 @@ RSpec.describe RunApi::FishAudio::Resources::TextToSpeech do
       text: "Hello",
       output_format: "wav",
       sample_rate_hz: 24_000,
-      references: [{audio: "UklGRg==", text: "Reference transcript"}]
+      references: [{audio: "https://cdn.runapi.ai/public/samples/voice.mp3", text: "Reference transcript"}]
     }
     expect(http).to receive(:request).with(:post, endpoint, body: params, options: anything)
       .and_return("id" => "task_1", "status" => "completed", "audios" => [{"url" => "https://runapi.ai/audio.mp3", "format" => "mp3", "mime_type" => "audio/mpeg", "size_bytes" => 128}])

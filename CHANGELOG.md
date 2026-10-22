@@ -1,5 +1,12 @@
 # Changelog
 
+## [js/v0.5.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/js%2Fv0.5.0), [ruby/v0.6.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/ruby%2Fv0.6.0), [go/v0.6.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/go%2Fv0.6.0), [python/v0.7.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/python%2Fv0.7.0), [java/v0.5.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/java%2Fv0.5.0) - 2026-10-22
+
+### Breaking
+- Fish s1, s2-pro and s2.1-pro temporary cloning accepts at most one HTTPS audio URL with its exact transcript and cannot be combined with voice_id.
+  Migration: Upload local or Base64 audio through POST /api/v1/files, pass the returned URL in references[0].audio with exact text, keep one sample and remove voice_id. Ensure the URL remains valid while queued and read. Choose voice_id alone for an existing voice.
+
+
 ## [js/v0.4.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/js%2Fv0.4.0), [ruby/v0.5.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/ruby%2Fv0.5.0), [go/v0.5.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/go%2Fv0.5.0), [python/v0.6.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/python%2Fv0.6.0), [java/v0.4.0](https://github.com/runapi-ai/fish-audio-sdk/releases/tag/java%2Fv0.4.0) - 2026-09-30
 
 ### Changed

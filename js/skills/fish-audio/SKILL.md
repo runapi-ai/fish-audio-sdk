@@ -54,6 +54,8 @@ Semantic invariants:
 - For voice resources, select `create-voice`, `list-voices`, or `get-voice` from service help. Create requires `name` and `source_audio_url`; get requires the RunAPI `voice_id`; list accepts optional `page_number` and `page_size`.
 - Use a voice only after its state is `trained`; a returned `voice_id` is a best-effort reference and may stop working later.
 - The `references` accepted by `text-to-speech` apply only to the current request; they do not create a voice resource.
+- For s1, s2-pro, and s2.1-pro, use at most one reference with a publicly accessible HTTPS audio URL and its nonempty verbatim transcript; never combine references with voice_id.
+- Upload local audio or Base64 with POST /api/v1/files first and use its returned url in references[0].audio. Files URLs expire by default after one hour and must remain valid during queueing and audio fetching; private reference storage does not extend their lifetime. For longer waits use an external HTTPS URL with enough validity, or upload again and submit a new request after expiry.
 - This version has no update, delete, revoke, or voice-library management operations. Do not assume a voice ID remains available or make claims about how source audio is used for training.
 
 Validate the file before sending it:

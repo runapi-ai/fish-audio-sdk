@@ -58,7 +58,7 @@ class FishAudioClientTest {
             .text("sample")
             .outputFormat("wav")
             .sampleRateHz(24000)
-            .references(java.util.Collections.singletonList(ReferenceAudio.builder().audio("UklGRg==").text("Reference transcript").build()))
+            .references(java.util.Collections.singletonList(ReferenceAudio.builder().audio("https://cdn.runapi.ai/public/samples/voice.mp3").text("Reference transcript").build()))
             .build()
     );
 
@@ -69,7 +69,7 @@ class FishAudioClientTest {
     assertEquals("s2.1-pro", body.get("model").asText());
     assertEquals("wav", body.get("output_format").asText());
     assertEquals(24000, body.get("sample_rate_hz").asInt());
-    assertEquals("UklGRg==", body.get("references").get(0).get("audio").asText());
+    assertEquals("https://cdn.runapi.ai/public/samples/voice.mp3", body.get("references").get(0).get("audio").asText());
     assertEquals("Reference transcript", body.get("references").get(0).get("text").asText());
   }
 

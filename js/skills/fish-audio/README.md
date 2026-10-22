@@ -2,7 +2,7 @@
 
 <p align="center">Create account-owned voice resources, attempt to reuse their IDs, or generate MP3/WAV speech through RunAPI from Claude Code, Codex, Gemini CLI, Cursor, and other agents.</p>
 
-Requests may include base64-encoded reference audio and exact transcripts for request-scoped voice matching.
+Requests may include a single HTTPS reference audio URL and exact transcripts for request-scoped voice matching.
 
 <div align="center">
 
@@ -40,3 +40,9 @@ The API and SDKs support creating, listing, and getting account-owned voice reso
 ## License
 
 Licensed under the Apache License, Version 2.0.
+
+## Temporary voice matching
+
+For `s1`, `s2-pro`, and `s2.1-pro`, supply at most one `references` item containing a publicly accessible HTTPS audio URL in `audio` and a nonempty, verbatim transcript in `text`. Do not send `voice_id` with a reference. Omit `references` when selecting an existing voice. The transcript is forwarded unchanged; callers must ensure it matches the audio.
+
+For local audio or Base64, first upload through `POST /api/v1/files`, then use the returned `url` as `references[0].audio`. Keep only one sample and remove `voice_id`. The URL must remain valid while the request waits and the audio is fetched. Files URLs expire by default after one hour; storing a reference does not extend that lifetime. For longer waits, use an external HTTPS URL with enough validity. If a URL expires, upload again and submit a new request.

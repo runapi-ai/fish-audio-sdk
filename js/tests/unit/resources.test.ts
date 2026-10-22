@@ -76,7 +76,7 @@ describe('Fish Audio resources', () => {
       text: 'Hello from RunAPI',
       output_format: 'wav',
       sample_rate_hz: 24000,
-      references: [{ audio: 'UklGRg==', text: 'Reference transcript' }],
+      references: [{ audio: 'https://cdn.runapi.ai/public/samples/voice.mp3', text: 'Reference transcript' }],
     });
 
     expect(mockHttp.request).toHaveBeenCalledWith('POST', '/api/v1/fish_audio/text_to_speech', {
@@ -85,7 +85,7 @@ describe('Fish Audio resources', () => {
         text: 'Hello from RunAPI',
         output_format: 'wav',
         sample_rate_hz: 24000,
-        references: [{ audio: 'UklGRg==', text: 'Reference transcript' }],
+        references: [{ audio: 'https://cdn.runapi.ai/public/samples/voice.mp3', text: 'Reference transcript' }],
       },
     });
     expect(result.audios[0]?.format).toBe('mp3');

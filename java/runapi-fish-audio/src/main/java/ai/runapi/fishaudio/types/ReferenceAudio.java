@@ -19,7 +19,7 @@ public final class ReferenceAudio {
     return new Builder();
   }
 
-  /** Returns the base64-encoded raw audio bytes. */
+  /** Returns the publicly accessible HTTPS audio URL. */
   public String getAudio() {
     return audio;
   }
@@ -43,7 +43,7 @@ public final class ReferenceAudio {
 
     private Builder() {}
 
-    /** Sets the base64-encoded raw audio bytes. */
+    /** Sets the publicly accessible HTTPS audio URL. */
     public Builder audio(String value) {
       this.audio = value;
       return this;

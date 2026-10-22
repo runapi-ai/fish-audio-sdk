@@ -28,7 +28,7 @@ gem install runapi-fish-audio
 go get github.com/runapi-ai/fish-audio-sdk/go@latest
 ```
 
-For Java, install `ai.runapi:runapi-fish-audio:0.4.0`. The PHP package is released from the split repository at https://github.com/runapi-ai/fish-audio-php.
+For Java, install `ai.runapi:runapi-fish-audio:0.5.0`. The PHP package is released from the split repository at https://github.com/runapi-ai/fish-audio-php.
 
 ## Quick start
 
@@ -55,7 +55,7 @@ console.log(result.audios[0].url);
 
 Use `client.listVoices.run({ page_number: 1, page_size: 10 })` to list voice resources created by the current account. Voice state is `created`, `training`, `trained`, or `failed`; only `trained` voices can be submitted for speech generation. A returned `voice_id` is a best-effort reference and may stop working later.
 
-Alternatively, pass request-scoped `references`, where each item contains base64-encoded raw audio bytes and its exact transcript. Use `references` when the request must not depend on a previously returned `voice_id`.
+Alternatively, pass request-scoped `references`, where each item contains a publicly accessible HTTPS audio URL and its exact transcript. Use `references` when the request must not depend on a previously returned `voice_id`.
 
 `output_format` defaults to `mp3`. MP3 supports `32000` or `44100` Hz and optional `bitrate_kbps` values of `64`, `128`, or `192`. WAV supports `8000`, `16000`, `24000`, `32000`, or `44100` Hz and does not accept `bitrate_kbps`.
 
@@ -72,3 +72,9 @@ The returned URL points to RunAPI-managed storage. See the [Fish Audio model pag
 ## License
 
 Licensed under the Apache License, Version 2.0.
+
+## Temporary voice matching
+
+For `s1`, `s2-pro`, and `s2.1-pro`, supply at most one `references` item containing a publicly accessible HTTPS audio URL in `audio` and a nonempty, verbatim transcript in `text`. Do not send `voice_id` with a reference. Omit `references` when selecting an existing voice. The transcript is forwarded unchanged; callers must ensure it matches the audio.
+
+For local audio or Base64, first upload through `POST /api/v1/files`, then use the returned `url` as `references[0].audio`. Keep only one sample and remove `voice_id`. The URL must remain valid while the request waits and the audio is fetched. Files URLs expire by default after one hour; storing a reference does not extend that lifetime. For longer waits, use an external HTTPS URL with enough validity. If a URL expires, upload again and submit a new request.

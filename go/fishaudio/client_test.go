@@ -133,7 +133,7 @@ func TestTextToSpeechRun(t *testing.T) {
 		OutputFormat: "wav",
 		SampleRateHz: 24_000,
 		References: []ReferenceAudio{{
-			Audio: "UklGRg==",
+			Audio: "https://cdn.runapi.ai/public/samples/voice.mp3",
 			Text:  "Reference transcript"}}})
 	if err != nil {
 		t.Fatal(err)
@@ -147,7 +147,7 @@ func TestTextToSpeechRun(t *testing.T) {
 	}
 	references := body["references"].([]any)
 	reference := references[0].(map[string]any)
-	if reference["audio"] != "UklGRg==" || reference["text"] != "Reference transcript" {
+	if reference["audio"] != "https://cdn.runapi.ai/public/samples/voice.mp3" || reference["text"] != "Reference transcript" {
 		t.Fatalf("unexpected references: %v", references)
 	}
 	if len(response.Audios) != 1 || response.Audios[0].Format != "mp3" {
